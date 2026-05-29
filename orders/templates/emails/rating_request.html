@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Rate Your Experience</title>
+
+<link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://care.sneakyklean.com/" />
+<meta property="og:title" content="SoleCare | Sneaky Klean" />
+<meta property="og:description" content="SoleCare by Sneaky Klean." />
+<meta property="og:image" content="https://res.cloudinary.com/dyueswnzk/image/upload/v1775420826/thumbnails-support.001_10_dej6fq.jpg" />
+
+<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content="https://care.sneakyklean.com/" />
+<meta property="twitter:title" content="SoleCare | Sneaky Klean" />
+<meta property="twitter:description" content="SoleCare by Sneaky Klean." />
+<meta property="twitter:image" content="https://res.cloudinary.com/dyueswnzk/image/upload/v1775420826/thumbnails-support.001_10_dej6fq.jpg" />
+
+</head>
+
+<body style="margin:0; padding:0; background:#f5f5f5; font-family:'Avenir', Arial, sans-serif;">
+
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f5f5f5; padding:20px 0;">
+<tr>
+<td align="center">
+
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#ffffff; border-radius:8px; max-width:600px; width: 100%; overflow:hidden;">
+
+<!-- Header -->
+<tr>
+  <td style="background:#000000; padding:36px 39px;">
+    
+    <table width="100%" cellpadding="0" cellspacing="0" border="0">
+      <tr>
+        
+        <!-- Logo (Left) -->
+        <td align="left" valign="middle" width="50%">
+          <img 
+            src="https://res.cloudinary.com/dyueswnzk/image/upload/v1775666139/sneak_qb6xip.png" 
+            width="100" 
+            alt="Logo" 
+            style="display:block; border:0;">
+        </td>
+
+        <!-- Order Number (Right) -->
+        <td align="right" valign="middle" width="50%" style="color:#ffffff; font-size:14px; font-weight:800;">
+          {{ order.order_number }}
+        </td>
+
+      </tr>
+    </table>
+
+  </td>
+</tr>
+
+<!-- Main Content -->
+<tr>
+<td style="padding:40px 30px; text-align:center;">
+
+  <!-- Check Mark Icon -->
+  <div style="margin-bottom:20px;">
+    <div style="width:80px; height:80px; background:#00A86B; border-radius:50%; margin:0 auto; display:flex; align-items:center; justify-content:center;">
+      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M20 6L9 17L4 12" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+  </div>
+
+  <div style="font-size:24px; font-weight:700; color:#000; margin-bottom:10px;">
+    Your Sneakers Have Been Delivered! 🎉
+  </div>
+
+  <div style="font-size:16px; color:#555; line-height:1.6; margin-bottom:30px;">
+    Hi {{ order.full_name }},<br>
+    We hope you're loving your freshly cleaned sneakers!
+  </div>
+
+  <!-- Divider -->
+  <div style="height:1px; background:#eee; margin:30px 0;"></div>
+
+  <div style="font-size:18px; font-weight:600; color:#000; margin-bottom:15px;">
+    How did we do?
+  </div>
+
+  <div style="font-size:14px; color:#666; line-height:1.6; margin-bottom:30px;">
+    Your feedback helps us improve our service and deliver the best experience possible.
+  </div>
+
+  <!-- Star Rating Visual -->
+  <div style="margin:30px 0;">
+    <span style="font-size:40px; color:#FFD700;">★ ★ ★ ★ ★</span>
+  </div>
+
+  <!-- CTA Button -->
+  <div style="margin:30px 0;">
+    <a href="https://care.sneakyklean.com/orders/{{ order.id }}/rate/" style="
+      display:inline-block;
+      background:#ff7400;
+      color:#ffffff;
+      font-size:16px;
+      font-weight:700;
+      padding:14px 40px;
+      text-decoration:none;
+      border-radius:25px;
+      box-shadow:0 4px 12px rgba(255,116,0,0.3);
+    ">
+      Rate Your Experience
+    </a>
+  </div>
+
+  <!-- Order Summary -->
+  <div style="margin-top:40px; padding:20px; background:#f9f9f9; border-radius:8px; text-align:left;">
+    <div style="font-size:14px; color:#555; margin-bottom:10px;">
+      <strong style="color:#000;">Order Summary:</strong>
+    </div>
+    
+    <table width="100%" cellpadding="5" style="font-size:14px; color:#555;">
+      <tr>
+        <td><strong>Order Number:</strong></td>
+        <td align="right">{{ order.order_number }}</td>
+      </tr>
+      <tr>
+        <td><strong>Services:</strong></td>
+        <td align="right">
+          {% for item in order.items.all %}
+            {{ item.service.name }}{% if not forloop.last %}, {% endif %}
+          {% endfor %}
+        </td>
+      </tr>
+      <tr>
+        <td><strong>Delivered:</strong></td>
+        <td align="right">{{ order.updated_at|date:"d M, Y" }}</td>
+      </tr>
+    </table>
+  </div>
+
+</td>
+</tr>
+
+<!-- Footer -->
+<tr>
+<td style="padding:30px; background:#000; text-align:center;">
+  
+  <div style="color:#fff; font-size:14px; margin-bottom:15px;">
+    Thank you for choosing Sneaky Klean!
+  </div>
+
+  <div style="color:#999; font-size:12px; line-height:1.6;">
+    Questions? Contact us at 
+    <a href="mailto:care@sneakyklean.com" style="color:#ff7400; text-decoration:none;">care@sneakyklean.com</a>
+    <br>
+    or call <a href="tel:+2348001234567" style="color:#ff7400; text-decoration:none;">+234 800 123 4567</a>
+  </div>
+
+  <div style="margin-top:20px;">
+    <a href="https://care.sneakyklean.com/dashboard/" style="color:#ff7400; text-decoration:none; font-size:13px;">
+      View Dashboard →
+    </a>
+  </div>
+
+</td>
+</tr>
+
+</table>
+
+</td>
+</tr>
+</table>
+
+</body>
+</html>

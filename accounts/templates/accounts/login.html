@@ -1,0 +1,393 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <link rel="stylesheet" href="https://cdn.materialdesignicons.com/7.4.47/css/materialdesignicons.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Boldonse&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Kode+Mono:wght@400..700&family=Kumbh+Sans:wght,YOPQ@100..900,300&family=Onest:wght@100..900&display=swap" rel="stylesheet">
+   <link rel="stylesheet" href="{% static 'css/dash.css' %}">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+<link href="https://cdn.jsdelivr.net/npm/tom-select/dist/css/tom-select.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/tom-select/dist/js/tom-select.complete.min.js"></script>
+
+
+      <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
+      <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png">
+      <link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png">
+      <link rel="manifest" href="/site.webmanifest">
+
+      <!-- Primary Meta Tags -->
+<title>Login | Sneaky Klean</title>
+<meta name="title" content="Login | Sneaky Klean" />
+<meta name="description" content="SoleCare by Sneaky Klean. " />
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://care.sneakyklean.com/" />
+<meta property="og:title" content="Login | Sneaky Klean" />
+<meta property="og:description" content="SoleCare by Sneaky Klean." />
+<meta property="og:image" content="https://res.cloudinary.com/dyueswnzk/image/upload/v1775420826/thumbnails-support.001_10_dej6fq.jpg" />
+
+<!-- X (Twitter) -->
+<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content="https://care.sneakyklean.com/" />
+<meta property="twitter:title" content="Login | Sneaky Klean" />
+<meta property="twitter:description" content="SoleCare by Sneaky Klean." />
+<meta property="twitter:image" content="https://res.cloudinary.com/dyueswnzk/image/upload/v1775420826/thumbnails-support.001_10_dej6fq.jpg" />
+
+
+
+
+
+
+ 
+</head>
+
+<body>
+
+<style>
+  
+@media (max-width: 768px) {
+
+
+  html, body {
+  height: 100%;
+  overflow: hidden; /* 🔥 disables scroll */
+}
+
+.snkd-container {
+  height: 100dvh; /* 🔥 modern mobile-safe */
+  display: flex;
+  justify-content: center; padding: 5px;
+  align-items: center;
+}
+
+
+.snkd-bg {
+  position: absolute;
+  inset: 0;
+}
+
+.snkd-right {
+  max-width: 100%;
+}
+
+
+body {
+  margin: 0;
+  height: 100dvh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+
+.snkd-logo{        margin-left: -24px;}
+
+}
+
+</style>
+
+
+<div class="snkd-bg" id="snkd-bg"></div>
+
+<div class="snkd-container">
+
+  <!-- Logo -->
+  <div class="snkd-logo">
+    <div class="snkd-logo-box reveal-up"><img width="50px" src="https://res.cloudinary.com/dyueswnzk/image/upload/v1775414377/SK_LOGO_ICON__1_2_m3r4mo.svg"></div>
+    <div class="reveal-up">SoleCare</div>
+  </div>
+
+  <!--  Right Panel -->
+  <div class="snkd-right">
+
+    <div class="snkd-card">
+      <div class="snkd-card-header"><span class="mdi mdi-information ikon"></span> Please verify your credentials</div>
+      
+      {% if messages %}
+        <script>
+          // Wait for showToast function to be available
+          window.addEventListener('DOMContentLoaded', function() {
+            {% for message in messages %}
+              setTimeout(function() {
+                if (typeof showToast === 'function') {
+                  showToast("{{ message|escapejs }}");
+                }
+              }, 100);
+            {% endfor %}
+          });
+        </script>
+      {% endif %}
+      
+      <form method="POST" action="{% url 'accounts:login' %}" id="login-form">
+        {% csrf_token %}
+        <input class="snkd-input" id="email-input" type="email" name="email" placeholder="you@sneakyklean.com" required />
+        <input class="snkd-input" id="otp-input" type="text" name="otp_code" placeholder="Enter OTP" maxlength="6" style="display:none;" />
+
+
+  <div class="snkd-row">
+  <div class="snkd-toggle-wrap" id="remember-wrap">
+    <label class="snkd-switch">
+      <input type="checkbox" name="remember" id="remember-checkbox" />
+      <span class="snkd-slider"></span>
+    </label>
+    <span class="snkd-toggle-label">Store Credentials</span>
+  </div>
+
+  <button type="submit" class="snkd-button" id="submit-button">Send OTP</button>
+</div>
+      </form>
+    </div>
+
+
+  </div>
+</div>
+
+<div id="snkd-toast" class="snkd-toast">OTP Sent</div>
+
+<script>const images = [
+  "https://res.cloudinary.com/dyueswnzk/image/upload/v1775415750/shyam-mishra-syJVsEvoHUc-unsplash_yybzhv.webp",
+  "https://res.cloudinary.com/dyueswnzk/image/upload/v1775416147/ryan-waring-j7zu2kpTnwY-unsplash_fakdam.webp",
+  "https://res.cloudinary.com/dyueswnzk/image/upload/v1775416169/cream-woman-sneakers-with-colourful-stones-it-golden-details_yo07g5.webp",
+  "https://res.cloudinary.com/dyueswnzk/image/upload/v1775417138/close-up-person-wearing-futuristic-sneakers_p0ff5h.webp",
+  "https://res.cloudinary.com/dyueswnzk/image/upload/v1775417788/sanju-pandita-36MiHf2KKr8-unsplash_nsf8bq.webp"
+];
+
+const bg = document.getElementById("snkd-bg");
+
+// Pick random image
+const randomImage = images[Math.floor(Math.random() * images.length)];
+bg.style.backgroundImage = `url(${randomImage})`;
+
+// Blur → clear animation
+window.addEventListener("load", () => {
+  setTimeout(() => {
+    bg.classList.add("snkd-loaded");
+  }, 100);
+});</script>
+
+
+<script id="snkd-final-js">
+
+// Toast element
+const toast = document.getElementById("snkd-toast");
+
+/* =========================
+   🔔 TOAST FUNCTION
+========================= */
+function showToast(message = "OTP Sent") {
+  toast.textContent = message;
+  toast.classList.add("snkd-show");
+
+  setTimeout(() => {
+    toast.classList.remove("snkd-show");
+  }, 2500);
+}
+
+/* =========================
+   📧 EMAIL VALIDATION
+========================= */
+function isValidEmail(email) {
+  return /\S+@\S+\.\S+/.test(email);
+}
+
+/* =========================
+   🔁 LOAD SAVED EMAIL ON PAGE LOAD
+========================= */
+window.addEventListener("DOMContentLoaded", () => {
+  const savedEmail = localStorage.getItem("snkd-email");
+  const emailInput = document.getElementById("email-input");
+  const rememberCheckbox = document.getElementById("remember-checkbox");
+
+  if (savedEmail && emailInput) {
+    emailInput.value = savedEmail;
+    if (rememberCheckbox) {
+      rememberCheckbox.checked = true;
+    }
+  }
+  
+  // Initialize two-stage login
+  initTwoStageLogin();
+});
+
+/* =========================
+   🔘 TWO-STAGE LOGIN HANDLER
+========================= */
+function initTwoStageLogin() {
+  const form = document.getElementById('login-form');
+  const emailInput = document.getElementById('email-input');
+  const otpInput = document.getElementById('otp-input');
+  const submitButton = document.getElementById('submit-button');
+  const rememberWrap = document.getElementById('remember-wrap');
+  const rememberCheckbox = document.getElementById('remember-checkbox');
+
+  if (!form || !emailInput || !otpInput || !submitButton) {
+    console.error('Login form elements not found');
+    return;
+  }
+
+  let isOtpStage = false;
+  let savedEmail = '';
+
+  // Handle form submission
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault(); // Prevent default form submission
+    
+    if (!isOtpStage) {
+      // STAGE 1: Send OTP
+      const email = emailInput.value.trim();
+      
+      if (!isValidEmail(email)) {
+        emailInput.style.borderColor = "red";
+        emailInput.focus();
+        showToast("Enter a valid email");
+        return;
+      }
+      
+      // Save email if remember is checked
+      if (rememberCheckbox && rememberCheckbox.checked) {
+        localStorage.setItem("snkd-email", email);
+      } else {
+        localStorage.removeItem("snkd-email");
+      }
+      
+      savedEmail = email;
+      
+      // Send AJAX request to backend
+      try {
+        submitButton.textContent = "Sending...";
+        submitButton.disabled = true;
+        
+        const formData = new FormData(form);
+        const response = await fetch('/login/', {
+          method: 'POST',
+          body: formData,
+          headers: {
+            'X-Requested-With': 'XMLHttpRequest'
+          }
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+          // Transform to OTP stage
+          emailInput.style.display = 'none';
+          otpInput.style.display = 'block';
+          otpInput.focus();
+          if (rememberWrap) rememberWrap.style.display = 'none';
+          
+          submitButton.textContent = "Verify OTP";
+          submitButton.disabled = false;
+          isOtpStage = true;
+          
+          showToast("OTP Sent");
+        } else {
+          showToast(data.message || "Failed to send OTP");
+          submitButton.textContent = "Send OTP";
+          submitButton.disabled = false;
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        showToast("Error sending OTP");
+        submitButton.textContent = "Send OTP";
+        submitButton.disabled = false;
+      }
+      
+    } else {
+      // STAGE 2: Verify OTP
+      const otp = otpInput.value.trim();
+      
+      if (otp.length !== 6) {
+        otpInput.style.borderColor = "red";
+        showToast("Enter 6-digit OTP");
+        return;
+      }
+      
+      // Submit OTP verification
+      try {
+        submitButton.textContent = "Verifying...";
+        submitButton.disabled = true;
+        
+        const formData = new FormData();
+        formData.append('csrfmiddlewaretoken', form.querySelector('[name=csrfmiddlewaretoken]').value);
+        formData.append('otp_code', otp);
+        
+        const response = await fetch('/verify-otp/', {
+          method: 'POST',
+          body: formData,
+          headers: {
+            'X-Requested-With': 'XMLHttpRequest'
+          }
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+          submitButton.textContent = "Verified";
+          showToast("Login Successful");
+          
+          // Redirect to dashboard
+          setTimeout(() => {
+            window.location.href = data.redirect || '/dashboard/';
+          }, 500);
+        } else {
+          showToast(data.message || "Invalid OTP");
+          submitButton.textContent = "Verify OTP";
+          submitButton.disabled = false;
+          otpInput.value = '';
+          otpInput.focus();
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        showToast("Error verifying OTP");
+        submitButton.textContent = "Verify OTP";
+        submitButton.disabled = false;
+      }
+    }
+  });
+}
+</script>
+
+
+<script>// =========================
+// REVEAL ON SCROLL (SAFE)
+// =========================
+(function () {
+
+  function initReveal() {
+    const elements = document.querySelectorAll(".reveal-up");
+
+    if (!elements.length) return;
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("active");
+
+          // OPTIONAL: animate only once
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.15 // trigger when 15% visible
+    });
+
+    elements.forEach(el => observer.observe(el));
+  }
+
+  document.addEventListener("DOMContentLoaded", initReveal);
+
+})();</script>
+
+</body>
+</html>

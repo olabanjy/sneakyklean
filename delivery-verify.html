@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+<title>Delivery Code</title>
+
+
+ <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
+      <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png">
+      <link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png">
+      <link rel="manifest" href="/site.webmanifest">
+
+
+      <meta property="og:type" content="website" />
+<meta property="og:url" content="https://care.sneakyklean.com/" />
+<meta property="og:title" content="SoleCare | Sneaky Klean" />
+<meta property="og:description" content="SoleCare by Sneaky Klean." />
+<meta property="og:image" content="https://res.cloudinary.com/dyueswnzk/image/upload/v1775420826/thumbnails-support.001_10_dej6fq.jpg" />
+
+<!-- X (Twitter) -->
+<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content="https://care.sneakyklean.com/" />
+<meta property="twitter:title" content="SoleCare | Sneaky Klean" />
+<meta property="twitter:description" content="SoleCare by Sneaky Klean." />
+<meta property="twitter:image" content="https://res.cloudinary.com/dyueswnzk/image/upload/v1775420826/thumbnails-support.001_10_dej6fq.jpg" />
+
+
+
+
+<style>
+body {
+  margin: 0;
+  background: #f6f6f6;
+  font-family: 'Avenir', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+}
+
+.container {
+  max-width: 520px;
+  margin: 40px auto;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.header {
+  background: #000;
+  padding: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header img {
+  width: 100px;
+}
+
+.header span {
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.content {
+  padding: 40px 30px;
+}
+
+.title {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  font-size: 14px;
+  color: #6b6b6b;
+  margin-bottom: 30px;
+  line-height: 1.6;
+}
+
+/* OTP */
+.otp-container {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin: 30px 0;
+}
+
+.otp-input {
+  width: 56px;
+  height: 64px;  font-family: 'Avenir', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+
+  text-align: center;
+  font-size: 28px;
+  font-weight: 600;
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.otp-input:focus {
+  border: 1px solid #000;
+  box-shadow: 0 0 0 2px rgba(0,0,0,0.05);
+}
+
+/* Button */
+.verify-btn {
+  margin-top: 20px;
+  width: 100%;
+  padding: 14px;
+  background: #000;
+  color: #fff;
+  border: none;
+  font-size: 14px;font-family: 'Avenir', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.verify-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.verify-btn:hover:not(:disabled) {
+  opacity: 0.8;
+}
+
+.divider {
+  height: 1px;
+  background: #eee;
+  margin: 30px 0;
+}
+
+.info {
+  font-size: 13px;
+  color: #6b6b6b;
+  line-height: 1.6;
+}
+
+/* ⭐ Rating */
+.rating-section {
+  text-align: center;
+
+}
+
+.rating-title {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+.stars span {
+  font-size: 28px;
+  cursor: pointer;
+  color: #e5e5e5;
+  transition: 0.2s;
+}
+
+.stars span.active {
+  color: #000;
+}
+
+#rating-text {
+  margin-top: 8px;
+  font-size: 12px;
+  color: #666;
+}
+
+.footer {
+  padding: 20px 30px;
+  font-size: 12px;
+  color: #9b9b9b;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <img src="https://res.cloudinary.com/dyueswnzk/image/upload/v1775666139/sneak_qb6xip.png">
+    <span>Verify Delivery</span>
+  </div>
+
+  <!-- Content -->
+  <div class="content">
+
+    <div class="title">Enter delivery code</div>
+
+    <div class="subtitle">
+ Enter the customer’s code to confirm delivery. Only hand over the order after verification. You may be held liable for unverified deliveries.
+    </div>
+
+    <!-- OTP -->
+    <div class="otp-container">
+      <input class="otp-input" maxlength="1">
+      <input class="otp-input" maxlength="1">
+      <input class="otp-input" maxlength="1">
+      <input class="otp-input" maxlength="1">
+    </div>
+
+    <button class="verify-btn" disabled id="verifyBtn">Verify Code</button>
+
+    <div class="divider"></div>
+
+
+    <div class="rating-section">
+   
+      <div id="rating-text"></div>
+    </div>
+
+
+    <div class="info">
+      This code helps keep your delivery secure.  
+      It will expire once your order is completed. Your feedback helps improve service delivery. For inquiries please contact us at <a href="mailto:care@sneakyklean.com?subject=Support Request"> 
+  care@sneakyklean.com
+</a>  or call 
+<a href="tel:+2348001234567">+234 800 123 4567</a>
+    </div>
+
+  </div>
+
+
+
+</div>
+
+<script>
+// OTP LOGIC
+const inputs = document.querySelectorAll(".otp-input");
+const button = document.getElementById("verifyBtn");
+
+function getOTP() {
+  return Array.from(inputs).map(i => i.value).join("");
+}
+
+function checkComplete() {
+  button.disabled = getOTP().length !== 4;
+}
+
+inputs.forEach((input, index) => {
+
+  input.addEventListener("input", () => {
+    input.value = input.value.replace(/[^0-9]/g, "");
+
+    if (input.value && inputs[index + 1]) {
+      inputs[index + 1].focus();
+    }
+
+    checkComplete();
+  });
+
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Backspace" && !input.value && inputs[index - 1]) {
+      inputs[index - 1].focus();
+    }
+  });
+
+});
+
+// Paste support
+inputs[0].addEventListener("paste", (e) => {
+  const paste = e.clipboardData.getData("text").slice(0, 4);
+
+  paste.split("").forEach((char, i) => {
+    if (inputs[i]) inputs[i].value = char;
+  });
+
+  checkComplete();
+});
+
+// Submit
+button.addEventListener("click", () => {
+  const otp = getOTP();
+  console.log("OTP:", otp);
+  alert("Code submitted: " + otp);
+});
+
+
+// ⭐ RATING LOGIC
+const stars = document.querySelectorAll(".stars span");
+const ratingText = document.getElementById("rating-text");
+
+let selectedRating = 0;
+
+stars.forEach(star => {
+
+  star.addEventListener("click", () => {
+    selectedRating = star.dataset.value;
+
+    stars.forEach(s => s.classList.remove("active"));
+
+    for (let i = 0; i < selectedRating; i++) {
+      stars[i].classList.add("active");
+    }
+
+    ratingText.innerText =
+      `You rated ${selectedRating} star${selectedRating > 1 ? "s" : ""}`;
+
+    console.log("Rating:", selectedRating);
+  });
+
+});
+</script>
+
+</body>
+</html>

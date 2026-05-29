@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Order Status</title>
+
+  <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
+      <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png">
+      <link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png">
+      <link rel="manifest" href="/site.webmanifest">
+
+
+      <meta property="og:type" content="website" />
+<meta property="og:url" content="https://care.sneakyklean.com/" />
+<meta property="og:title" content="SoleCare | Sneaky Klean" />
+<meta property="og:description" content="SoleCare by Sneaky Klean." />
+<meta property="og:image" content="https://res.cloudinary.com/dyueswnzk/image/upload/v1775420826/thumbnails-support.001_10_dej6fq.jpg" />
+
+<!-- X (Twitter) -->
+<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content="https://care.sneakyklean.com/" />
+<meta property="twitter:title" content="SoleCare | Sneaky Klean" />
+<meta property="twitter:description" content="SoleCare by Sneaky Klean." />
+<meta property="twitter:image" content="https://res.cloudinary.com/dyueswnzk/image/upload/v1775420826/thumbnails-support.001_10_dej6fq.jpg" />
+
+
+
+
+</head>
+
+<body style="margin:0; padding:0; background:#f5f5f5; font-family:'Avenir', Arial, sans-serif;">
+
+
+
+
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f5f5f5; padding:20px 0; ">
+
+
+<tr>
+<td align="center">
+
+
+
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#ffffff; border-radius:8px;  max-width:600px; width: 100%; overflow:hidden;">
+
+<!-- Header -->
+<tr>
+  <td style="background:#000000; padding:36px 39px;">
+    
+    <table width="100%" cellpadding="0" cellspacing="0" border="0">
+      <tr>
+        
+        <!-- Logo (Left) -->
+        <td align="left" valign="middle" width="50%">
+          <img 
+            src="https://res.cloudinary.com/dyueswnzk/image/upload/v1775666139/sneak_qb6xip.png" 
+            width="100" 
+            alt="Logo" 
+            style="display:block; border:0;">
+        </td>
+
+        <!-- Order Number (Right) -->
+        <td align="right" valign="middle" width="50%" style="color:#ffffff; font-size:14px; font-weight:800;">
+          {{ order.order_number }}
+        </td>
+
+      </tr>
+    </table>
+
+  </td>
+</tr>
+
+<!-- Greeting -->
+<tr>
+<td style="padding:30px 30px 10px 30px;">
+  <div style="font-size:20px; font-weight:600; color:#000;">
+    {% if status == 'SCHEDULED' %}
+      Order Confirmed! 🎉
+    {% elif status == 'PICKED_UP' %}
+      Your Sneakers Are On Their Way! 👟
+    {% elif status == 'CLEANING' %}
+      We're Cleaning Your Sneakers! ✨
+    {% elif status == 'OUT_FOR_DELIVERY' %}
+      Out for Delivery! 🚚
+    {% elif status == 'DELIVERED' %}
+      Delivered! Enjoy Your Fresh Kicks! 🎊
+    {% elif status == 'CANCELED' %}
+      Order Canceled
+    {% elif status == 'DELAYED' %}
+      Order Delayed
+    {% else %}
+      Order Update
+    {% endif %}
+  </div>
+  <div style="font-size:14px; color:#777; margin-top:8px;">
+    Hi {{ order.full_name }}, here's an update on your order.
+  </div>
+</td>
+</tr>
+
+<!-- Order Details -->
+<tr>
+<td style="padding:20px 30px; background:#f9f9f9;">
+  <div style="font-size:14px; color:#555; margin-bottom:15px;">
+    <strong style="color:#000;">Order Details:</strong>
+  </div>
+  
+  <table width="100%" cellpadding="5" cellspacing="0" style="font-size:14px; color:#555;">
+    <tr>
+      <td style="padding:8px 0;"><strong>Order Number:</strong></td>
+      <td style="padding:8px 0; text-align:right;">{{ order.order_number }}</td>
+    </tr>
+    <tr>
+      <td style="padding:8px 0;"><strong>Services:</strong></td>
+      <td style="padding:8px 0; text-align:right;">
+        {% for item in order.items.all %}
+          {{ item.service.name }}{% if item.quantity > 1 %} x{{ item.quantity }}{% endif %}{% if not forloop.last %}, {% endif %}
+        {% endfor %}
+      </td>
+    </tr>
+    <tr>
+      <td style="padding:8px 0;"><strong>Pickup Date:</strong></td>
+      <td style="padding:8px 0; text-align:right;">{{ order.pickup_date|date:"d M, Y" }}</td>
+    </tr>
+    <tr>
+      <td style="padding:8px 0;"><strong>Location:</strong></td>
+      <td style="padding:8px 0; text-align:right;">{{ order.get_location_display }}</td>
+    </tr>
+    <tr>
+      <td style="padding:8px 0; border-top:1px solid #ddd; font-size:16px;"><strong>Total:</strong></td>
+      <td style="padding:8px 0; border-top:1px solid #ddd; text-align:right; font-size:16px; font-weight:700;">
+        {% if order.is_free_cleaning %}
+          <span style="color:#00A86B;">FREE! 🎉</span>
+        {% else %}
+          ₦{{ order.total_amount|floatformat:0 }}
+        {% endif %}
+      </td>
+    </tr>
+  </table>
+</td>
+</tr>
+
+<!-- Status Update -->
+<tr>
+<td style="padding:30px;">
+
+<div style="font-size:16px; font-weight:bold; margin-bottom:20px; color:#000;">
+Current Status
+</div>
+
+{% if status == 'SCHEDULED' %}
+  <table width="100%">
+  <tr>
+  <td width="20" align="center" valign="top">
+  <div style="width:8px;height:8px;background:#fc6809;border-radius:50%;margin:4px 0;"></div>
+  </td>
+  <td style="padding-left:10px; color: #fc6809;">
+  <strong>Scheduled</strong> <br>
+  <span style="color:#777;">Pickup scheduled for {{ order.pickup_date|date:"d M, Y" }}</span><br>
+  </td>
+  </tr>
+  </table>
+  
+  <div style="margin-top:20px; padding:15px; background:#fff8f0; border-left:4px solid #fc6809; font-size:13px; color:#555;">
+    <strong>What's Next:</strong> We'll pick up your sneakers on the scheduled date. Make sure they're ready for collection!
+  </div>
+
+{% elif status == 'PICKED_UP' %}
+  <table width="100%">
+  <tr>
+  <td width="20" align="center" valign="top">
+  <div style="width:8px;height:8px;background:#2f80ed;border-radius:50%;margin:4px 0;"></div>
+  </td>
+  <td style="padding-left:10px; color: #2f80ed;">
+  <strong>Picked Up</strong> <br>
+  <span style="color:#777;">Your sneakers are on their way to our facility</span>
+  </td>
+  </tr>
+  </table>
+  
+  <div style="margin-top:20px; padding:15px; background:#f0f7ff; border-left:4px solid #2f80ed; font-size:13px; color:#555;">
+    <strong>What's Next:</strong> Our team will start the cleaning process soon. We'll notify you when cleaning begins.
+  </div>
+
+{% elif status == 'CLEANING' %}
+  <table width="100%">
+  <tr>
+  <td width="20" align="center" valign="top">
+  <div style="width:8px;height:8px;background:#2f80ed;border-radius:50%;margin:4px 0;"></div>
+  </td>
+  <td style="padding-left:10px; color: #2f80ed;">
+  <strong>Cleaning in Progress</strong> ✨<br>
+  <span style="color:#777;">Our experts are carefully restoring your sneakers</span>
+  </td>
+  </tr>
+  </table>
+  
+  <div style="margin-top:20px; padding:15px; background:#f0f7ff; border-left:4px solid #2f80ed; font-size:13px; color:#555;">
+    <strong>What's Next:</strong> Once cleaning is complete, we'll prepare them for delivery. You'll receive an update when they're out for delivery.
+  </div>
+
+{% elif status == 'OUT_FOR_DELIVERY' %}
+  <table width="100%">
+  <tr>
+  <td width="20" align="center" valign="top">
+  <div style="width:8px;height:8px;background:#018b51;border-radius:50%;margin:4px 0;"></div>
+  </td>
+  <td style="padding-left:10px; color: #018b51;">
+  <strong>Out for Delivery</strong> 🚚<br>
+  <span style="color:#777;">{% if order.delivery_date %}Expected delivery: {{ order.delivery_date|date:"d M, Y" }}{% else %}Arriving soon{% endif %}</span>
+  </td>
+  </tr>
+  </table>
+  
+  <div style="margin-top:20px; padding:15px; background:#f0fff8; border-left:4px solid #018b51; font-size:13px; color:#555;">
+    <strong>What's Next:</strong> Your sneakers will be delivered to {{ order.address }}. You'll receive a delivery code via email when the rider is nearby.
+  </div>
+
+{% elif status == 'DELIVERED' %}
+  <table width="100%">
+  <tr>
+  <td width="20" align="center" valign="top">
+  <div style="width:8px;height:8px;background:#00A86B;border-radius:50%;margin:4px 0;"></div>
+  </td>
+  <td style="padding-left:10px; color: #00A86B;">
+  <strong>Delivered</strong> ✅<br>
+  <span style="color:#777;">Your fresh sneakers have been delivered!</span>
+  </td>
+  </tr>
+  </table>
+  
+  <div style="margin-top:20px; padding:15px; background:#f0fff8; border-left:4px solid #00A86B; font-size:13px; color:#555;">
+    <strong>How did we do?</strong> We'd love to hear your feedback! Rate your experience on your dashboard.
+  </div>
+
+{% elif status == 'CANCELED' %}
+  <table width="100%">
+  <tr>
+  <td width="20" align="center" valign="top">
+  <div style="width:8px;height:8px;background:#d32f2f;border-radius:50%;margin:4px 0;"></div>
+  </td>
+  <td style="padding-left:10px; color: #d32f2f;">
+  <strong>Order Canceled</strong> <br>
+  <span style="color:#777;">This order has been canceled</span>
+  </td>
+  </tr>
+  </table>
+  
+  {% if order.cancellation_reason %}
+  <div style="margin-top:20px; padding:15px; background:#fff0f0; border-left:4px solid #d32f2f; font-size:13px; color:#555;">
+    <strong>Reason:</strong> {{ order.cancellation_reason }}
+  </div>
+  {% endif %}
+
+{% elif status == 'DELAYED' %}
+  <table width="100%">
+  <tr>
+  <td width="20" align="center" valign="top">
+  <div style="width:8px;height:8px;background:#f2a531;border-radius:50%;margin:4px 0;"></div>
+  </td>
+  <td style="padding-left:10px; color: #f2a531;">
+  <strong>Order Delayed</strong> ⚠️<br>
+  <span style="color:#777;">There's a slight delay with your order</span>
+  </td>
+  </tr>
+  </table>
+  
+  <div style="margin-top:20px; padding:15px; background:#fff9f0; border-left:4px solid #f2a531; font-size:13px; color:#555;">
+    <strong>We apologize:</strong> We're working to get your order back on track. We'll keep you updated.
+  </div>
+{% endif %}
+
+</td>
+</tr>
+
+
+
+
+<!-- ✅ Post-Cleaning Inspection -->
+<tr>
+<td style="padding:20px; border-top:1px solid #eee;">
+
+<div style="font-size:16px; font-weight:bold; margin-bottom:15px;">
+SoleCare Report
+</div>
+
+<table width="100%">
+
+<!-- Outsole Restoration -->
+<tr>
+<td style="padding:6px 0;">
+<table width="100%" style="background:#f3f3f3; border-radius:40px;">
+<tr>
+<td style="padding:14px; font-size:13px; color:#2b2b2b;">SOLE HEALTH
+</td>
+<td align="right" style="padding:14px; font-size:13px; font-weight:600; color:#22c55e;">
+FULLY RESTORED
+</td>
+</tr>
+</table>
+</td>
+</tr>
+
+<!-- Color Recovery -->
+<tr>
+<td style="padding:6px 0;">
+<table width="100%" style="background:#f3f3f3; border-radius:40px;">
+<tr>
+<td style="padding:14px; font-size:13px; color:#2b2b2b;">
+COLOR RECOVERY
+</td>
+<td align="right" style="padding:14px; font-size:13px; font-weight:600; color:#22c55e;">
+COLOR ENHANCED
+</td>
+</tr>
+</table>
+</td>
+</tr>
+
+<!-- Material Integrity -->
+<tr>
+<td style="padding:6px 0;">
+<table width="100%" style="background:#f3f3f3; border-radius:40px;">
+<tr>
+<td style="padding:14px; font-size:13px; color:#2b2b2b;">
+MATERIAL INTEGRITY
+</td>
+<td align="right" style="padding:14px; font-size:13px; font-weight:600; color:#22c55e;">
+STRUCTURALLY SOUND
+</td>
+</tr>
+</table>
+</td>
+</tr>
+
+
+</table>
+
+</td>
+</tr>
+
+
+
+
+<!-- Services & Pricing -->
+<tr>
+<td style="    padding: 20px;
+    background: #000000;
+    border: 1px solid;
+    border-radius: 0px 0px 10px 10px;
+    border-top: none;">
+
+<table width="100%">
+<tr>
+
+<!-- Left: Title -->
+<td style="font-size:16px; font-weight:600; color:#fff;">
+Services & Cost
+</td>
+
+<!-- Right: Payment Status -->
+<td align="right">
+<span style="
+  background:#d1fae5;
+  color:#065f46;
+  padding:6px 12px;
+  border-radius:20px;
+  font-size:12px;
+  font-weight:600;
+  display:inline-block;
+">
+PAID
+</span>
+</td>
+
+</tr>
+</table><br>
+
+<table width="100%" cellpadding="0" cellspacing="0" border="0">
+
+<!-- Services from Order -->
+{% for item in order.items.all %}
+<tr>
+<td style="padding:12px 0; border-bottom:1px solid #444;">
+<table width="100%">
+<tr>
+<td style="font-size:15px; color:#fff;">{{ item.service.name }}{% if item.quantity > 1 %} (x{{ item.quantity }}){% endif %}</td>
+<td align="right" style="font-size:15px; font-weight:600; color:#fff;">₦{{ item.subtotal|floatformat:0 }}</td>
+</tr>
+</table>
+</td>
+</tr>
+{% endfor %}
+
+<!-- Subtotal -->
+<tr>
+<td style="padding:12px 0; border-bottom:1px solid #444;">
+<table width="100%">
+<tr>
+<td style="font-size:15px; color:#fff;">Subtotal</td>
+<td align="right" style="font-size:15px; font-weight:600; color:#fff;">₦{{ order.subtotal|floatformat:0 }}</td>
+</tr>
+</table>
+</td>
+</tr>
+
+<!-- Delivery Fee -->
+<tr>
+<td style="padding:12px 0; border-bottom:1px solid #444;">
+<table width="100%">
+<tr>
+<td style="font-size:15px; color:#fff;">Delivery Fee</td>
+<td align="right" style="font-size:15px; font-weight:600; color:#fff;">₦{{ order.delivery_fee|floatformat:0 }}</td>
+</tr>
+</table>
+</td>
+</tr>
+
+<!-- VAT -->
+<tr>
+<td style="padding:12px 0; border-bottom:1px solid #444;">
+<table width="100%">
+<tr>
+<td style="font-size:15px; color:#fff;">VAT (7.5%)</td>
+<td align="right" style="font-size:15px; font-weight:600; color:#fff;">₦{{ order.vat|floatformat:0 }}</td>
+</tr>
+</table>
+</td>
+</tr>
+
+{% if order.discount_amount > 0 %}
+<!-- Discount -->
+<tr>
+<td style="padding:12px 0; border-bottom:1px solid #444;">
+<table width="100%">
+<tr>
+<td style="font-size:15px; color:#22c55e;">Discount</td>
+<td align="right" style="font-size:15px; font-weight:600; color:#22c55e;">-₦{{ order.discount_amount|floatformat:0 }}</td>
+</tr>
+</table>
+</td>
+</tr>
+{% endif %}
+
+<!-- Grand Total -->
+<tr>
+<td style="padding:14px 0;">
+<table width="100%">
+<tr>
+<td style="font-size:16px; font-weight:700; color:#fff;">Grand Total</td>
+<td align="right" style="font-size:16px; font-weight:700; color:#22c55e;">
+{% if order.is_free_cleaning %}
+  <span style="color:#22c55e;">FREE! 🎉</span>
+{% else %}
+  ₦{{ order.total_amount|floatformat:0 }}
+{% endif %}
+</td>
+</tr>
+</table>
+</td>
+</tr>
+
+</table>
+
+{% if order.special_instructions %}
+<div style="margin-top:20px; padding:15px; background:#222; border-radius:8px; border-left:4px solid #ff7400;">
+  <div style="font-size:13px; color:#aaa; margin-bottom:5px;"><strong>Your Instructions:</strong></div>
+  <div style="font-size:14px; color:#fff;">{{ order.special_instructions }}</div>
+</div>
+{% endif %}
+
+<br>
+<div style="text-align: center; margin-top: 15px;">
+            <a href="https://kolapo.com/sk/dash" style="font-size: 16px; font-weight: 800; color: #fff; background-color: #ff7400; padding: 12px 30px; text-decoration: none; border-radius: 25px;">View Dashboard</a>
+<br><br><br>
+
+             <a href="https://kolapo.com/sk/rating" style="font-size: 16px; font-weight: 800; color: #fff; background-color: none; border: 1px solid #fff; color: #fff; padding: 12px 30px; text-decoration: none; border-radius: 25px;">⭐ Rate Us</a>
+        </div>
+
+<br> 
+
+<div style="height:1px; background:#eeeeee; margin:30px 0; opacity: .5;"></div>
+
+<div style="color:#fff; opacity: .5; " class="footer">Your feedback helps improve service delivery. For inquiries please contact us at <a style="color:#fff;" href="mailto:care@sneakyklean.com?subject=Support Request"> 
+  care@sneakyklean.com
+</a>  or call 
+<a style="color:#fff;" href="tel:+2348001234567">+234 800 123 4567</a>
+    </div>
+<br>
+
+</body>
+</html>

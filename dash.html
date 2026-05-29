@@ -1,0 +1,1839 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <link rel="stylesheet" href="https://cdn.materialdesignicons.com/7.4.47/css/materialdesignicons.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Kode+Mono:wght@400..700&family=Kumbh+Sans:wght,YOPQ@100..900,300&family=Onest:wght@100..900&display=swap" rel="stylesheet">
+   <link rel="stylesheet" href="css/dash.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+<link href="https://cdn.jsdelivr.net/npm/tom-select/dist/css/tom-select.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/tom-select/dist/js/tom-select.complete.min.js"></script>
+
+
+      <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
+      <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png">
+      <link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png">
+      <link rel="manifest" href="/site.webmanifest">
+
+      <!-- Primary Meta Tags -->
+<title>SoleCare | Sneaky Klean</title>
+<meta name="title" content="Dashboard | Sneaky Klean" />
+<meta name="description" content="SoleCare by Sneaky Klean. " />
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://care.sneakyklean.com/" />
+<meta property="og:title" content="Dashboard | Sneaky Klean" />
+<meta property="og:description" content="SoleCare by Sneaky Klean." />
+<meta property="og:image" content="https://res.cloudinary.com/dyueswnzk/image/upload/v1775420826/thumbnails-support.001_10_dej6fq.jpg" />
+
+<!-- X (Twitter) -->
+<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content="https://care.sneakyklean.com/" />
+<meta property="twitter:title" content="Dashboard | Sneaky Klean" />
+<meta property="twitter:description" content="SoleCare by Sneaky Klean." />
+<meta property="twitter:image" content="https://res.cloudinary.com/dyueswnzk/image/upload/v1775420826/thumbnails-support.001_10_dej6fq.jpg" />
+
+
+
+ 
+</head>
+
+
+<body>
+
+  <style> 
+
+
+  .bg-major{   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23000000' fill-opacity='0.05' d='M7.2,11.2C8.97,11.2 10.4,12.63 10.4,14.4C10.4,16.17 8.97,17.6 7.2,17.6C5.43,17.6 4,16.17 4,14.4C4,12.63 5.43,11.2 7.2,11.2M14.8,16A2,2 0 0,1 16.8,18A2,2 0 0,1 14.8,20A2,2 0 0,1 12.8,18A2,2 0 0,1 14.8,16M15.2,4A4.8,4.8 0 0,1 20,8.8C20,11.45 17.85,13.6 15.2,13.6A4.8,4.8 0 0,1 10.4,8.8C10.4,6.15 12.55,4 15.2,4Z'/%3E%3C/svg%3E") !important;  background-repeat: repeat !important;
+  background-position: right bottom !important;
+  background-size: 700px !important;
+
+}
+
+
+@media (max-width: 768px) {
+  .hero-buttons {
+
+          bottom: 72px; 
+
+  }
+
+
+  .rating{ display:none; }
+}
+
+</style>
+
+<nav class="sneaky-nav" id="sneaky-nav">
+  <div class="sneaky-nav-inner">
+
+    <!-- LEFT (logo + hamburger) -->
+    <div class="sneaky-nav-left">
+     <button class="sneaky-nav-toggle" id="sneaky-nav-toggle">
+        <span></span>
+        <span></span>
+          <span></span>
+      </button>
+
+       <div class="sneaky-nav-logo "><img width="100px" src="https://res.cloudinary.com/dyueswnzk/image/upload/v1775121018/sneak_fa5z8z.svg"> </div>
+
+      
+    </div>
+
+    <!-- CENTER (hidden on mobile) -->
+    <div class="sneaky-nav-links" id="sneaky-nav-links">
+ 
+<a href="#" class="settings-link">Settings</a>
+
+
+
+                <a href="#">Market <span class="one-f" style="display: inline-block !important; vertical-align: super; font-size: 10px; color: #a72ef3;">WIP</span></a>     <a style="color:#ff5a00;" href="#">Logout</a>
+ 
+
+
+    </div>
+
+    <!-- RIGHT -->
+    <div class="sneaky-nav-right">
+      <button class="sneaky-nav-btn open-pickup-modal "><span class="mdi mdi-calendar-check-outline"></span> Book</button>  
+  <!-- 🔔 NOTIFICATION -->
+
+
+    <!-- BUTTON -->
+    <button style="color: #000;" id="notif-btn" class="notif-btn">
+      <span class="mdi mdi-bell-outline"></span>
+      <span class="notif-dot"></span>
+    </button>
+
+
+    <!-- DROPDOWN -->
+    <div id="notif-dropdown" class="notif-dropdown">
+      <button id="notif-close" class="notif-close">&times;</button>
+
+      <div class="notif-item" data-id="1">
+        <div class="notif-icon status-start">
+          <span class="mdi mdi-package-variant-closed"></span>
+        </div>
+        <div class="notif-content">
+          <strong>Order #1021</strong>
+          <span class="snkd-status pending notif-tag">Scheduled</span>
+          <p>Pickup 06-11-26</p>
+        </div>
+      </div>
+
+
+
+      <div class="notif-item" data-id="3">
+        <div class="notif-icon status-ready">
+          <span class="mdi mdi-creation-outline"></span>
+        </div>
+        <div class="notif-content">
+          <strong>Order #1022</strong>
+          <span class="snkd-status cleaning notif-tag">CLEANING</span>
+             <p>Cleaning in Progress</p>
+       
+        </div>
+      </div>
+
+
+      <div class="notif-item" data-id="4">
+        <div class="notif-icon status-delivering">
+          <span style="color:#018b51;" class="mdi mdi-truck-outline"></span>
+        </div>
+        <div class="notif-content">
+          <strong>Order #1023</strong>
+          <span class="snkd-status delivery notif-tag">Out for Delivery</span>
+          <p>Arrives 09-11-26</p>
+        </div>
+      </div>
+
+
+           <div class="notif-item" data-id="5">
+        <div class="notif-icon status-delay">
+          <span style="color:#f2a530;" class="mdi mdi-hand-front-left-outline"></span>
+        </div>
+        <div class="notif-content">
+          <strong>Order #1021</strong>
+   <span class="snkd-status delayed">Delayed</span>
+          <p>Orded delayed</p>
+        </div>
+      </div>
+
+
+
+           <div class="notif-item" data-id="5">
+        <div class="notif-icon status-cancel">
+          <span style="color: red;" class="mdi mdi-window-close"></span>
+        </div>
+        <div class="notif-content">
+          <strong>Order #1021</strong>
+          <span class="snkd-status cancel notif-tag">Canceled</span>
+          <p>Canceled 06-11-26</p>
+        </div>
+      </div>
+
+
+
+
+    <div class="notif-item" data-id="6">
+        <div class="notif-icon status-completed">
+          <span class="mdi mdi-check"></span>
+        </div>
+        <div class="notif-content">
+          <strong>Order #1025</strong>
+       <span class="snkd-status complete">Delivered</span>
+          <p>Delivered 09-11-26</p>
+        </div>
+      </div>
+
+
+
+ 
+
+
+
+    </div>
+
+  </div>
+</nav>
+
+
+<br><br><br><br><br>
+<div class="sneaky-container">
+
+  <!-- HERO -->
+  <section class="sneaky-hero">
+  <div style="background: bisque; " class="sneaky-hero-left bg-major">
+  
+ <div style="margin-bottom: 0px;" class="hero-content">
+ <h1 style="font-size: 25px;
+    font-weight: 400;">Hello, Kolapo</h1>
+
+ <div class="snkd-metrics">
+
+  <div class="snkd-metrics">
+
+  <div class="snkd-metric">
+    <div class="snkd-metric-label">Total Orders</div>
+    <div class="snkd-metric-value">0</div>
+  </div>
+<div class="snkd-metric">
+  <div class="snkd-metric-label">Pending Orders</div>
+
+  <div class="snkd-metric-value">0</div>
+
+
+</div>
+
+  <div class="snkd-metric snkd-reward">
+    <div class="snkd-metric-label">
+      Progress till <strong>Free Cleaning</strong>
+    </div>
+
+    <div id="snkd-progress-text" data-total="/15">0</div>
+
+    <div class="snkd-progress">
+      <div id="snkd-progress-bar" class="snkd-progress-bar"></div>
+    </div>
+  </div>
+
+  <div class="snkd-metric">
+    <div class="snkd-metric-label">Items Sold</div>
+    <div class="snkd-metric-value">0</div>
+  </div>
+
+  <div class="snkd-metric">
+    <div class="snkd-metric-label">Items Listed</div>
+    <div class="snkd-metric-value">0</div>
+  </div>
+
+  <div class="snkd-metric">
+    <div class="snkd-metric-label">Total Income</div>
+    <div class="snkd-metric-value">₦ 0</div>
+  </div>
+
+</div>
+ 
+
+
+
+
+
+
+<br>
+ 
+
+ <div class="hero-buttons">
+  <button class="reveal-up" id="sneaky-book-btn">
+  <span class="mdi mdi-calendar-check-outline mdi-mx"></span> 
+  Book
+</button> <button class="find-location reveal-up">
+      <span class="mdi mdi-whatsapp"></span>
+    CHAT 
+    </button>
+  
+</div>
+
+  </div>
+</div>
+
+</div>
+
+    <div class="sneaky-cards">
+  <div class="sneaky-card sneaky-orange"  data-service="Basic Cleaning">
+  <div class="card-image"></div>
+
+  <div class="card-text">
+    <h3>Basic Cleaning</h3>
+    <p>₦7,000</p>
+  </div>
+
+    <div class="card-hover-icon">
+    <span class="mdi mdi-plus"></span>
+  </div>
+
+</div>
+
+
+      <div class="sneaky-card sneaky-green " data-service="Deep Cleaning"> <div style="background-image: url('https://res.cloudinary.com/dyueswnzk/image/upload/v1774820882/image_14_ihvgfe.webp');" class="card-image"></div>
+
+  <div class="card-text">
+    <h3>Deep Cleaning</h3>
+    <p>₦10,000</p>
+  </div>   <div class="card-hover-icon">
+    <span class="mdi mdi-plus"></span>
+  </div>
+</div>
+      <div class="sneaky-card sneaky-blue" data-service="Restoration"><div style="background-image: url('https://res.cloudinary.com/dyueswnzk/image/upload/v1774822529/image_15_swwhyp.webp');" class="card-image"></div>
+
+  <div class="card-text">
+    <h3>Restoration</h3>
+    <p>₦15,000</p>
+  </div>
+
+  <div class="card-hover-icon">
+    <span class="mdi mdi-plus"></span>
+  </div>
+
+</div>
+
+
+      <div class="sneaky-card sneaky-pink" data-service="Suede Care" > <div style="background-image: url('https://res.cloudinary.com/dyueswnzk/image/upload/v1774823543/image_17_aabydf.webp');" class="card-image"></div>
+
+  <div class="card-text">
+    <h3>Suede Care</h3>
+    <p>₦25,000</p>
+  </div>
+
+    <div class="card-hover-icon">
+    <span class="mdi mdi-plus"></span>
+  </div>
+
+  </section>
+
+
+<br><br>
+
+
+<div class="snkd-table-wrap">
+
+  <link href="https://cdn.jsdelivr.net/npm/@mdi/font/css/materialdesignicons.min.css" rel="stylesheet">
+
+<table class="snkd-table">
+ <thead>
+  <tr >
+    <th data-type="text">Order #</th>
+    <th data-type="date">Booking Date</th>
+    <th data-type="text">Status</th>
+    <th class="hyde">Rating</th> 
+    <th data-type="number">Amount</th>
+  </tr>
+</thead>
+
+<tbody id="snkd-table-body">
+
+<tr data-link="https://kolapo.com/sk/mail">
+  <td>#1021</td>
+  <td>05-11-26</td>
+  <td>
+    <div class="snkd-status-block">
+      <span class="snkd-status pending">Scheduled</span>
+      <span class="snkd-pickup">Pickup 06-11-26</span>
+    </div>
+  </td>
+  <td class="rating">
+    <i class="mdi mdi-star-outline"></i>
+    <i class="mdi mdi-star-outline"></i>
+    <i class="mdi mdi-star-outline"></i>
+    <i class="mdi mdi-star-outline"></i>
+    <i class="mdi mdi-star-outline"></i>
+  </td>
+  <td>₦ 10,000</td>
+</tr>
+
+<tr data-link="https://kolapo.com/sk/mail">
+  <td>#1022</td>
+  <td>06-11-26</td>
+  <td>
+    <div class="snkd-status-block">
+      <span class="snkd-status cleaning">Cleaning</span>
+      <span class="snkd-cleaning">Cleaning in progress</span>
+    </div>
+  </td>
+  <td class="rating">
+    <i class="mdi mdi-star"></i>
+    <i class="mdi mdi-star"></i>
+    <i class="mdi mdi-star-outline"></i>
+    <i class="mdi mdi-star-outline"></i>
+    <i class="mdi mdi-star-outline"></i>
+  </td>
+  <td>₦ 8,500</td>
+</tr>
+
+<tr data-link="https://kolapo.com/sk/mail">
+  <td>#1023</td>
+  <td>07-11-26</td>
+  <td>
+    <div class="snkd-status-block">
+      <span class="snkd-status delivery">Out for Delivery</span>
+      <span class="snkd-delivery">Arrives 09-11-26</span>
+    </div>
+  </td>
+  <td class="rating">
+    <i class="mdi mdi-star"></i>
+    <i class="mdi mdi-star"></i>
+    <i class="mdi mdi-star"></i>
+    <i class="mdi mdi-star-outline"></i>
+    <i class="mdi mdi-star-outline"></i>
+  </td>
+  <td>₦ 12,000</td>
+</tr>
+
+<tr>
+  <td>#1024</td>
+  <td>08-11-26</td>
+  <td>
+    <div class="snkd-status-block">
+      <span class="snkd-status cancel">Canceled</span>
+      <span class="snkd-cancel">Canceled 09-11-26</span>
+    </div>
+  </td>
+  <td class="rating">
+    <i class="mdi mdi-star-outline"></i>
+    <i class="mdi mdi-star-outline"></i>
+    <i class="mdi mdi-star-outline"></i>
+    <i class="mdi mdi-star-outline"></i>
+    <i class="mdi mdi-star-outline"></i>
+  </td>
+  <td>₦ 9,000</td>
+</tr>
+
+<tr>
+  <td>#1025</td>
+  <td>09-11-26</td>
+  <td>
+    <div class="snkd-status-block">
+      <span class="snkd-status complete">Delivered</span>
+      <span class="snkd-complete">Delivered 09-11-26</span>
+    </div>
+  </td>
+  <td class="rating">
+    <i class="mdi mdi-star"></i>
+    <i class="mdi mdi-star"></i>
+    <i class="mdi mdi-star"></i>
+    <i class="mdi mdi-star"></i>
+    <i class="mdi mdi-star"></i>
+  </td>
+  <td>₦ 7,500</td>
+</tr>
+
+<tr>
+  <td>#1026</td>
+  <td>10-11-26</td>
+  <td>
+    <div class="snkd-status-block">
+      <span class="snkd-status delayed">Delayed</span>
+      <span class="snkd-delay">Order delayed</span>
+    </div>
+  </td>
+  <td class="rating">
+    <i class="mdi mdi-star"></i>
+    <i class="mdi mdi-star-outline"></i>
+    <i class="mdi mdi-star-outline"></i>
+    <i class="mdi mdi-star-outline"></i>
+    <i class="mdi mdi-star-outline"></i>
+  </td>
+  <td>₦ 11,000</td>
+</tr>
+
+<tr>
+  <td>#1027</td>
+  <td>11-11-26</td>
+  <td>
+    <div class="snkd-status-block">
+      <span class="snkd-status cleaning">Cleaning</span>
+      <span class="snkd-cleaning">Cleaning in progress</span>
+    </div>
+  </td>
+  <td class="rating">
+    <i class="mdi mdi-star"></i>
+    <i class="mdi mdi-star"></i>
+    <i class="mdi mdi-star"></i>
+    <i class="mdi mdi-star-outline"></i>
+    <i class="mdi mdi-star-outline"></i>
+  </td>
+  <td>₦ 8,000</td>
+</tr>
+
+<tr>
+  <td>#1028</td>
+  <td>12-11-26</td>
+  <td>
+    <div class="snkd-status-block">
+      <span class="snkd-status pending">Scheduled</span>
+      <span class="snkd-pickup">Pickup 06-11-26</span>
+    </div>
+  </td>
+  <td class="rating">
+    <i class="mdi mdi-star-outline"></i>
+    <i class="mdi mdi-star-outline"></i>
+    <i class="mdi mdi-star-outline"></i>
+    <i class="mdi mdi-star-outline"></i>
+    <i class="mdi mdi-star-outline"></i>
+  </td>
+  <td>₦ 15,000</td>
+</tr>
+
+<tr>
+  <td>#1029</td>
+  <td>13-11-26</td>
+  <td>
+    <div class="snkd-status-block">
+      <span class="snkd-status delivery">Out for Delivery</span>
+      <span class="snkd-delivery">Arrives 15-11-26</span>
+    </div>
+  </td>
+  <td class="rating">
+    <i class="mdi mdi-star"></i>
+    <i class="mdi mdi-star"></i>
+    <i class="mdi mdi-star"></i>
+    <i class="mdi mdi-star"></i>
+    <i class="mdi mdi-star-outline"></i>
+  </td>
+  <td>₦ 9,500</td>
+</tr>
+
+<tr>
+  <td>#1030</td>
+  <td>14-11-26</td>
+  <td>
+    <div class="snkd-status-block">
+      <span class="snkd-status cleaning">Cleaning</span>
+      <span class="snkd-cleaning">Cleaning in progress</span>
+    </div>
+  </td>
+  <td class="rating">
+    <i class="mdi mdi-star"></i>
+    <i class="mdi mdi-star"></i>
+    <i class="mdi mdi-star-outline"></i>
+    <i class="mdi mdi-star-outline"></i>
+    <i class="mdi mdi-star-outline"></i>
+  </td>
+  <td>₦ 7,000</td>
+</tr>
+
+</tbody>
+</table>
+
+</div>
+
+<br>
+
+
+<p class="snls-title"><span class="mdi mdi-cog-box"></span>  Settings</p>
+<div class="profile-row" id="profile-settings-row">
+
+  <div class="form-group">
+    <label>PREFERRED NAME</label>
+    <input name="name" type="text" value="Kolapo" readonly>
+  </div>
+
+  <div class="form-group">
+    <label>EMAIL</label>
+    <input name="email" type="email" value="kolapo@email.com" readonly>
+  </div>
+
+  <div class="form-group">
+    <label>PHONE</label>
+    <input name="phone" type="text" value="+234 800 000 0000" readonly>
+  </div>
+
+  <div class="form-actions">
+    <button 
+      id="profile-toggle-btn" 
+      type="button" 
+      class="profile-toggle-btn">
+      Edit
+    </button>
+  </div>
+
+</div>
+
+<br>
+
+  <!-- FOOTER -->
+  <div class="sneaky-cta-footer">
+    <div class="sneaky-footer-left reveal-up">
+<img style="opacity: .3;" width="100px" src="https://res.cloudinary.com/dyueswnzk/image/upload/v1775121018/sneak_fa5z8z.svg">
+    </div>
+
+    <div style="color: #000;opacity: .6;" class="sneaky-footer-right">
+      <span class="mdi mdi-instagram reveal-up"></span>
+   
+      <span class="mdi mdi-email-outline reveal-up"></span>
+
+      <a class="reveal-up" href="#">Terms</a>
+      <a class="reveal-up" href="#">Privacy Policy</a>
+    </div>
+  </div>
+
+  
+</section>
+
+
+
+
+<div class="pickup-modal" id="pickup-modal">
+
+  <div class="pickup-backdrop"></div>
+
+  <div class="pickup-content">
+
+    <!-- CLOSE -->
+    <button class="pickup-close" id="pickup-close">✕</button>
+
+    <div class="pickup-grid">
+
+      <!-- LEFT: FORM -->
+      <div class="pickup-form">
+
+        <div style="margin-bottom: 1em;" class="pickup-header"> <h2>BOOK PICKUP</h2> </div>
+
+  <button id="service-toggle-btn" class="service-toggle">
+  + Select Service
+</button>
+
+        <div style="padding:1em;" class="service-grid" id="service-grid">
+        
+
+  <div class="service-card orange" data-price="7000">
+
+    <h3>Basic Cleaning</h3>
+    <p>₦7,000</p>
+      <!-- TAGS -->
+  <div class="service-tags">
+
+    <span class="tag"><span class="mdi mdi-check-circle"></span> Exterior Cleaning</span>
+    <span class="tag"><span class="mdi mdi-check-circle"></span> Sole Cleaning</span>
+  </div>
+
+
+    <button>Select</button>
+  </div>
+
+  <div class="service-card green" data-price="10000">
+
+    <h3>Deep Cleaning</h3>
+    <p>₦10,000</p>
+   <div class="service-tags">
+    <span class="tag"><span class="mdi mdi-check-circle"></span> Interior Cleaning</span>
+    <span class="tag"><span class="mdi mdi-check-circle"></span> Exterior Cleaning</span>
+    <span class="tag"><span class="mdi mdi-check-circle"></span> Sole Cleaning</span>
+
+  </div>
+
+    <button>Select</button>
+  </div>
+
+  <div class="service-card blue" data-price="15000">
+
+    <h3>Restoration</h3>
+    <p>₦15,000</p>
+  <div class="service-tags">
+    <span class="tag"><span class="mdi mdi-check-circle"></span> Interior Cleaning</span>
+    <span class="tag"><span class="mdi mdi-check-circle"></span> Exterior Cleaning</span>
+    <span class="tag"><span class="mdi mdi-check-circle"></span> Sole Cleaning</span>
+       <span class="tag"><span class="mdi mdi-check-circle"></span> Odor Neutralization</span>
+          <span class="tag"><span class="mdi mdi-check-circle"></span> Midsole Unyellowing</span>
+  </div>
+
+    <button>Select</button>
+  </div>
+
+  <div class="service-card pink" data-price="25000">
+
+    <h3>Suede Care</h3>
+    <p>₦25,000</p>
+     <div class="service-tags">
+    <span class="tag"><span class="mdi mdi-check-circle"></span> Suede/Nubuck Care</span>
+       <span class="tag"><span class="mdi mdi-check-circle"></span> Interior Cleaning</span>
+    <span class="tag"><span class="mdi mdi-check-circle"></span> Exterior Cleaning</span>
+
+
+   
+  </div>
+
+    <button>Select</button>
+  </div>
+
+</div>
+
+
+
+
+  <div class="pickup-scroll">
+      <div >  
+<div class="form-group address-group">
+  <label>Pickup Address *</label>
+  <input id="address-input" type="text" placeholder="Enter your address" autocomplete="off">
+
+  <div id="address-dropdown" class="address-dropdown">
+    
+<div class="dropdown-item" data-area="island" data-address="12 Admiralty Way, Lekki">
+  <i class="mdi mdi-map-marker-outline"></i>
+  <span>12 Admiralty Way, Lekki</span>
+</div>
+
+<div class="dropdown-item" data-area="mainland" data-address="45 Allen Avenue, Ikeja">
+  <i class="mdi mdi-map-marker-outline"></i>
+  <span>45 Allen Avenue, Ikeja</span>
+</div>
+
+<div class="dropdown-item" data-area="mainland" data-address="3 Bode Thomas, Surulere">
+  <i class="mdi mdi-map-marker-outline"></i>
+  <span>3 Bode Thomas, Surulere</span>
+</div>
+
+  </div>
+</div>
+
+
+        <div class="form-row snfix">
+  
+  <!-- LOCATION (REQUIRED) -->
+<div class="form-group">
+  <label>AREA *</label>
+  <select id="location-select">
+    <option value="">Select location</option>
+    <option value="mainland">Mainland</option>
+    <option value="island">Island</option>
+  </select>
+</div>
+
+  <!-- DISCOUNT -->
+  <div class="form-group discount-group">
+    <label>Discount Code</label>
+    <div class="discount-input-wrap">
+      <input id="discount-code" type="text" placeholder="Enter code">
+      <button type="button" id="apply-discount">Apply</button>
+    </div>
+  </div>
+
+</div>
+
+        <div class="form-row snfix">
+          <div class="form-group">
+            <label>Pickup Date *</label>
+<input id="pickup-date" type="text" placeholder="Select date">
+          </div>
+
+          <div class="form-group">
+            <label>Number of Items *</label>
+            <input name="quantity" type="number" placeholder="How many sneakers?">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Special Instructions</label>
+          <textarea name="instructions" placeholder="Any special instructions or notes for our team?"></textarea>
+        </div>
+
+        <div class="form-check">
+          <input style="display:none;"     name="terms" type="checkbox">
+          <span></span>
+        </div>
+
+
+      </div></div>
+<div class="pickup-footer-bar">
+
+<div class="price-summary-grid">
+
+  <!-- ROW 1 -->
+  <div class="price-item">
+    <span class="price-label">Selected Service:</span>
+    <strong id="selected-service">None</strong>
+  </div>
+
+  <div class="price-item">
+    <span class="price-label">Subtotal:</span>
+    ₦<strong id="subtotal">0</strong>
+  </div>
+
+  <!-- ROW 2 -->
+  <div class="price-item">
+    <span class="price-label">Delivery Fee:</span>
+    ₦<strong id="delivery">0</strong>
+  </div>
+
+  <div class="price-item">
+    <span class="price-label">VAT (7.5%):</span>
+    ₦<strong id="vat">0</strong>
+  </div>
+
+  <div class="price-item total">
+    <span class="price-label">Total:</span>
+    ₦<strong id="total">0</strong>
+  </div>
+
+</div>
+
+
+  <!-- RIGHT (BUTTON) -->
+  <button class="submit-btn">REQUEST PICKUP</button>
+
+</div>
+
+</div>
+      <!-- RIGHT -->
+      <div class="pickup-side">
+
+        <!-- HOW IT WORKS -->
+        <div class="pickup-card">
+         <div class="how-header" > <h3> How It Works</h3></div>
+
+          <div class="step">
+            <span class="mdi mdi-calendar-check-outline"></span>
+            <div>
+              <strong>Book & Schedule</strong>
+              <p>Fill out the form with your details and preferences</p>
+            </div>
+          </div>
+
+          <div class="step">
+   <span class="mdi mdi-check"></span>
+            <div>
+              <strong>We Confirm</strong>
+              <p>We'll call to confirm your pickup time and details</p>
+            </div>
+          </div>
+
+          <div class="step">
+            <span class="mdi mdi-moped-outline"></span>
+            <div>
+              <strong>Pickup & Clean</strong>
+              <p>We collect your sneakers and return them fresh</p>
+            </div>
+          </div><br>
+        </div>
+
+        <!-- HELP -->
+      <div class="pickup-footer">    <div style="    padding: 0px;" class="pickup-card ">
+          <h3 style="margin-bottom:1.5em;">Need Help?</h3>
+
+          <p style="display: flex; vertical-align: middle; gap: 10px;"><span style="font-size: 18px;" class="mdi mdi-phone-outline"></span> +234 000 000 0000</p>
+          <p style="display: flex; vertical-align: middle; gap: 10px;"><span style="font-size: 18px;" class="mdi mdi-email-outline"></span> care@sneakyklean.com</p>
+        </div>
+
+      </div></div>
+
+    </div>
+  </div>
+</div>
+
+
+
+
+<div id="service-info-toast" class="toast info-toast">
+  <p id="info-toast-message"></p>
+</div>
+
+<div id="service-toast" class="toast">
+  <p id="toast-message">Are you sure?</p>
+  <div class="toast-actions">
+    <button id="toast-cancel">Cancel</button>
+    <button id="toast-confirm">Yes</button>
+  </div>
+</div>
+
+
+
+
+
+
+<div id="preloader">
+  <div class="sk-container">
+
+    <!-- NAV -->
+    <div class="sk-nav">
+      <div class="sk-logo shimmer"></div>
+      <div class="sk-nav-links shimmer"></div>
+      <div class="sk-nav-btns">
+        <div class="sk-btn shimmer"></div>
+        <div class="sk-btn shimmer"></div>
+      </div>
+    </div>
+
+    <!-- HERO + CARDS -->
+    <div class="sk-hero-grid">
+
+      <!-- HERO LEFT -->
+      <div class="sk-hero shimmer"></div>
+
+      <!-- CARDS RIGHT -->
+      <div class="sk-cards">
+        <div class="sk-card shimmer"></div>
+        <div class="sk-card shimmer"></div>
+        <div class="sk-card shimmer"></div>
+        <div class="sk-card shimmer"></div>
+      </div>
+
+    </div>
+
+    <!-- SLIDER + STEPS -->
+    <div class="sk-section">
+      <div class="sk-slider shimmer"></div>
+
+      <div class="sk-steps">
+        <div class="sk-line shimmer"></div>
+        <div class="sk-line small shimmer"></div>
+        <div class="sk-line small shimmer"></div>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="sk-cta">
+      <div class="sk-cta-box shimmer"></div>
+      <div class="sk-cta-box shimmer"></div>
+    </div>
+
+  </div>
+</div>
+
+
+<script>document.addEventListener("DOMContentLoaded", () => {
+  const preloader = document.getElementById("preloader");
+
+  setTimeout(() => {
+    preloader.style.opacity = "0";
+
+    setTimeout(() => {
+      preloader.remove();
+    }, 400);
+
+  }, 2000);
+});</script>
+
+
+
+
+<script id="snkd-progress-fix">
+document.addEventListener("DOMContentLoaded", () => {
+  const current = 8;
+  const total = 15;
+
+  const textEl = document.getElementById("snkd-progress-text");
+  const barEl = document.getElementById("snkd-progress-bar");
+
+  if (!textEl || !barEl) return;
+
+  // ✅ set ONLY current number
+  textEl.textContent = current;
+
+  // ✅ store total for CSS
+  textEl.setAttribute("data-total", `/${total}`);
+
+  // ✅ progress bar
+  const percent = (current / total) * 100;
+  barEl.style.width = Math.min(percent, 100) + "%";
+});
+</script>
+
+
+<script>
+// =========================
+// INFO TOAST MODULE (SAFE)
+// =========================
+
+(function () {
+
+  let toastEl;
+  let messageEl;
+  let timeout;
+
+  function createToast() {
+    toastEl = document.createElement("div");
+    toastEl.className = "toast info-toast";
+
+    messageEl = document.createElement("p");
+
+    toastEl.appendChild(messageEl);
+    document.body.appendChild(toastEl);
+  }
+
+  function normalizeMessage(message) {
+    if (!message) return "";
+
+    const msg = message.toLowerCase();
+
+    if (msg.includes("remove")) return "Service removed";
+    if (msg.includes("select") || msg.includes("change")) return "Service selected";
+
+    return message;
+  }
+
+  function show(message, type = "default") {
+    if (!toastEl) createToast();
+
+    const finalMessage = normalizeMessage(message);
+    messageEl.textContent = finalMessage;
+
+    clearTimeout(timeout);
+
+    // 🔥 reset classes
+    toastEl.classList.remove("error");
+
+    // 🔴 apply error style ONLY when needed
+    if (type === "error") {
+      toastEl.classList.add("error");
+    }
+
+    toastEl.classList.add("active");
+
+    timeout = setTimeout(() => {
+      toastEl.classList.remove("active");
+      toastEl.classList.remove("error"); // reset after hide
+    }, 2000);
+  }
+
+  window.InfoToast = {
+    show
+  };
+
+})();
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+  /* =========================
+     MOBILE NAV
+  ========================= */
+  const toggle = document.getElementById("sneaky-nav-toggle");
+  const links = document.getElementById("sneaky-nav-links");
+
+  if (toggle && links) {
+    toggle.addEventListener("click", () => {
+      links.classList.toggle("active");
+      toggle.classList.toggle("active");
+      document.body.classList.toggle("no-scroll");
+    });
+
+    document.querySelectorAll("#sneaky-nav-links a").forEach(link => {
+      link.addEventListener("click", () => {
+        links.classList.remove("active");
+        toggle.classList.remove("active");
+        document.body.classList.remove("no-scroll");
+      });
+    });
+  }
+
+  /* =========================
+     NAV SCROLL
+  ========================= */
+  let lastScroll = 0;
+  const nav = document.getElementById("sneaky-nav");
+
+  window.addEventListener("scroll", () => {
+    const current = window.pageYOffset;
+
+    if (current > 10) {
+      nav.classList.add("sneaky-nav-scrolled");
+    } else {
+      nav.classList.remove("sneaky-nav-scrolled");
+    }
+
+    if (!links.classList.contains("active")) {
+      if (current > lastScroll && current > 80) {
+        nav.classList.add("sneaky-nav-hidden");
+      } else {
+        nav.classList.remove("sneaky-nav-hidden");
+      }
+    }
+
+    lastScroll = current;
+  });
+
+  /* =========================
+     SMOOTH SCROLL (GUIDE)
+  ========================= */
+  const guideLink = document.getElementById("guide-link");
+  const howSection = document.getElementById("sneaky-how");
+
+  if (guideLink && howSection) {
+    guideLink.addEventListener("click", (e) => {
+      e.preventDefault();
+
+      links.classList.remove("active");
+      toggle.classList.remove("active");
+      document.body.classList.remove("no-scroll");
+
+      howSection.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+    });
+  }
+
+  /* =========================
+     PICKUP MODAL (FIXED)
+  ========================= */
+  const pickupModal = document.getElementById("pickup-modal");
+  const pickupBtn = document.getElementById("sneaky-book-btn");
+  const pickupClose = document.getElementById("pickup-close");
+  const pickupBackdrop = document.querySelector(".pickup-backdrop");
+
+  if (pickupBtn && pickupModal) {
+    pickupBtn.addEventListener("click", () => {
+      pickupModal.classList.add("active");
+      document.body.classList.add("no-scroll");
+    });
+  }
+
+  if (pickupClose) {
+    pickupClose.addEventListener("click", () => {
+      pickupModal.classList.remove("active");
+      document.body.classList.remove("no-scroll");
+    });
+  }
+
+  if (pickupBackdrop) {
+    pickupBackdrop.addEventListener("click", () => {
+      pickupModal.classList.remove("active");
+      document.body.classList.remove("no-scroll");
+    });
+  }
+
+  /* =========================
+     SLIDER (BEFORE/AFTER)
+  ========================= */
+  const slider = document.querySelector(".sneaky-slider");
+
+  if (slider) {
+    const divider = slider.querySelector(".sneaky-divider");
+    const before = slider.querySelector(".slider-before");
+
+    let isDragging = false;
+
+    const moveSlider = (x) => {
+      const rect = slider.getBoundingClientRect();
+      let position = x - rect.left;
+
+      if (position < 0) position = 0;
+      if (position > rect.width) position = rect.width;
+
+      const percent = (position / rect.width) * 100;
+
+      before.style.width = percent + "%";
+      divider.style.left = percent + "%";
+    };
+
+    divider.addEventListener("mousedown", () => isDragging = true);
+    window.addEventListener("mouseup", () => isDragging = false);
+    window.addEventListener("mousemove", (e) => {
+      if (!isDragging) return;
+      moveSlider(e.clientX);
+    });
+
+    divider.addEventListener("touchstart", () => isDragging = true);
+    window.addEventListener("touchend", () => isDragging = false);
+    window.addEventListener("touchmove", (e) => {
+      if (!isDragging) return;
+      moveSlider(e.touches[0].clientX);
+    });
+  }
+
+  /* =========================
+     TABS
+  ========================= */
+  const tabs = document.querySelectorAll(".tab");
+  const contents = document.querySelectorAll(".tab-content");
+  const sliders = document.querySelectorAll(".slider-content");
+
+  tabs.forEach(tab => {
+    tab.addEventListener("click", () => {
+
+      tabs.forEach(t => t.classList.remove("active"));
+      contents.forEach(c => c.classList.remove("active"));
+      sliders.forEach(s => s.classList.remove("active"));
+
+      tab.classList.add("active");
+
+      const id = tab.dataset.tab;
+      document.getElementById(id).classList.add("active");
+      document.getElementById("slider-" + id).classList.add("active");
+    });
+  });
+
+  /* =========================
+     COUNTER
+  ========================= */
+  const counter = document.getElementById("sneaky-count");
+
+  if (counter) {
+    let hasAnimated = false;
+
+    const animateCount = (el, target) => {
+      let start = 0;
+      const duration = 1500;
+      const step = target / (duration / 16);
+
+      const update = () => {
+        start += step;
+        if (start < target) {
+          el.textContent = Math.floor(start);
+          requestAnimationFrame(update);
+        } else {
+          el.textContent = target;
+        }
+      };
+
+      update();
+    };
+
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && !hasAnimated) {
+          animateCount(counter, parseInt(counter.textContent));
+          hasAnimated = true;
+        }
+      });
+    }, { threshold: 0.5 });
+
+    observer.observe(counter);
+  }
+
+});
+</script>
+
+<script>document.addEventListener("DOMContentLoaded", () => {
+  initNav();
+  initModal();
+  initSlider();
+  initTabs();
+  initCounter();
+  initServices();
+});</script>
+
+
+
+<script>
+function initQuickSelect() {
+
+  const previewCards = document.querySelectorAll(".sneaky-card");
+  const modal = document.getElementById("pickup-modal");
+  const serviceCards = document.querySelectorAll(".service-card");
+
+  previewCards.forEach(preview => {
+
+    preview.addEventListener("click", () => {
+
+      const serviceName = preview.dataset.service;
+
+      /* =========================
+         OPEN MODAL
+      ========================= */
+      modal.classList.add("active");
+      document.body.classList.add("no-scroll");
+
+      /* =========================
+         FIND MATCHING SERVICE
+      ========================= */
+      const match = Array.from(serviceCards).find(card => {
+        return card.querySelector("h3").textContent === serviceName;
+      });
+
+      if (!match) return;
+
+      /* =========================
+         TRIGGER REAL SYSTEM (FIXED)
+      ========================= */
+      if (typeof handleSelection === "function") {
+        handleSelection(match);
+      }
+
+      /* =========================
+         SCROLL INTO VIEW
+      ========================= */
+      setTimeout(() => {
+        match.scrollIntoView({ behavior: "smooth", block: "center" });
+      }, 300);
+
+    });
+
+  });
+
+}
+
+initQuickSelect();
+</script>
+
+
+<script>function animateAppleRating(value = 82) {
+  const fill = document.querySelector(".apple-fill");
+  if (!fill) return;
+
+  // slight delay = premium feel
+  setTimeout(() => {
+    fill.style.width = value + "%";
+  }, 300);
+}
+
+// run on load
+document.addEventListener("DOMContentLoaded", () => {
+  animateAppleRating(82);
+});</script>
+
+<script>document.addEventListener("DOMContentLoaded", () => {
+  const notif = document.getElementById("delivery-notification");
+  const closeBtn = document.getElementById("notif-close");
+
+  if (closeBtn && notif) {
+    closeBtn.addEventListener("click", () => {
+      notif.style.display = "none";
+    });
+  }
+});</script>
+
+
+<script>// =========================
+// MODAL TRIGGER (SAFE EXTENSION)
+// =========================
+
+(function () {
+
+  function initModalTriggers() {
+    const modal = document.getElementById("pickup-modal");
+    const triggers = document.querySelectorAll(".open-pickup-modal");
+
+    if (!modal || triggers.length === 0) return;
+
+    const open = () => {
+      modal.classList.add("active");
+      document.body.classList.add("no-scroll");
+    };
+
+    triggers.forEach(el => {
+      el.addEventListener("click", (e) => {
+        // prevent link jump
+        if (el.tagName === "A") e.preventDefault();
+
+        open();
+      });
+    });
+  }
+
+  // run after DOM is ready
+  document.addEventListener("DOMContentLoaded", initModalTriggers);
+
+})();</script>
+
+<script>// =========================
+// OFFER CLAIM SYSTEM (SAFE EXTENSION)
+// =========================
+(function () {
+
+  function initOfferClaim() {
+
+    const buttons = document.querySelectorAll(".claim-offer-btn");
+    const discountInput = document.getElementById("discount-code");
+    const discountBtn = document.getElementById("apply-discount");
+
+    if (!buttons.length || !discountInput || !discountBtn) return;
+
+    buttons.forEach(btn => {
+
+      btn.addEventListener("click", () => {
+
+        // prevent double click
+        if (btn.classList.contains("claimed")) return;
+
+        // ✅ apply code automatically
+        discountInput.value = "SNKYLN";
+
+        // trigger existing discount system
+        discountBtn.click();
+
+        // ✅ update button UI
+        btn.classList.add("claimed");
+        btn.innerHTML = `<span class="mdi mdi-check-circle-outline"></span> Offer Claimed`;
+        btn.disabled = true;
+
+        // optional toast
+        if (window.InfoToast) {
+          InfoToast.show("Offer applied");
+        }
+
+      });
+
+    });
+
+  }
+
+  document.addEventListener("DOMContentLoaded", initOfferClaim);
+
+})();</script>
+
+<script>// =========================
+// REVEAL ON SCROLL (SAFE)
+// =========================
+(function () {
+
+  function initReveal() {
+    const elements = document.querySelectorAll(".reveal-up");
+
+    if (!elements.length) return;
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("active");
+
+          // OPTIONAL: animate only once
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.15 // trigger when 15% visible
+    });
+
+    elements.forEach(el => observer.observe(el));
+  }
+
+  document.addEventListener("DOMContentLoaded", initReveal);
+
+})();</script>
+
+<script src="js/modal.js"></script>
+<script src="js/slider.js"></script>
+<script src="js/tabs.js"></script>
+<script src="js/counter.js"></script>
+<script src="js/services-dash.js"></script>
+<script src="js/main.js"></script>
+<script src="js/validation-dash.js"></script>
+
+<script>
+(function () {
+
+  const preloader = document.getElementById("preloader");
+
+  if (!preloader) return;
+
+  // Safety: fallback in case load never fires
+  const MAX_WAIT = 4000;
+
+  let loaded = false;
+
+  function finishLoading() {
+    if (loaded) return;
+    loaded = true;
+
+    // Fade in page content
+    document.body.classList.add("loaded");
+
+    // Start preloader exit
+    preloader.classList.add("fade-out");
+
+    // Remove from DOM after animation
+    setTimeout(() => {
+      preloader.remove();
+    }, 600);
+  }
+
+  /* =========================
+     REAL LOAD EVENT
+  ========================= */
+  window.addEventListener("load", () => {
+    // slight delay makes it feel intentional (not instant flash)
+    setTimeout(finishLoading, 2000);
+  });
+
+  /* =========================
+     FALLBACK (failsafe)
+  ========================= */
+  setTimeout(finishLoading, MAX_WAIT);
+
+})();
+</script>
+
+<script>flatpickr("#pickup-date", {
+  minDate: "today",
+  dateFormat: "Y-m-d",
+  disableMobile: true
+});</script>
+
+
+<script>new TomSelect("#location-select", {
+  create: false,
+  sortField: {
+    field: "text",
+    direction: "asc"
+  }
+});</script>
+
+<script>const totalWashes = 24;
+const freeWashTarget = 15;
+
+const washesIntoCycle = totalWashes % freeWashTarget;
+const washesLeft = freeWashTarget - washesIntoCycle;
+
+const progressPercent = (washesIntoCycle / freeWashTarget) * 100;
+
+// Update UI
+document.querySelector(".snkd-reward .snkd-metric-value").textContent = washesLeft;
+
+document.querySelector(".snkd-progress-bar").style.width = progressPercent + "%";</script>
+
+
+<script>
+  
+  const getCellValue = (tr, index) =>
+  tr.children[index].innerText.trim();
+
+const parseValue = (value, type) => {
+  if (type === "number") {
+    return parseFloat(value.replace(/[^\d.]/g, "")) || 0;
+  }
+
+  if (type === "date") {
+    const [d, m, y] = value.split("-");
+    return new Date(`20${y}`, m - 1, d);
+  }
+
+  return value.toLowerCase();
+};
+
+const compare = (index, type, asc) => (a, b) => {
+  const v1 = parseValue(getCellValue(a, index), type);
+  const v2 = parseValue(getCellValue(b, index), type);
+
+  if (v1 > v2) return asc ? 1 : -1;
+  if (v1 < v2) return asc ? -1 : 1;
+  return 0;
+};
+
+document.querySelectorAll(".snkd-table th").forEach((th, index) => {
+  let asc = true;
+
+  th.addEventListener("click", () => {
+    const table = th.closest("table");
+    const tbody = table.querySelector("tbody");
+    const rows = Array.from(tbody.querySelectorAll("tr"));
+    const type = th.dataset.type;
+
+    // reset other headers
+    table.querySelectorAll("th").forEach(h => {
+      h.classList.remove("asc", "desc");
+    });
+
+    // toggle direction
+    th.classList.toggle("asc", asc);
+    th.classList.toggle("desc", !asc);
+
+    // sort rows
+    rows.sort(compare(index, type, asc));
+
+    // append sorted rows
+    rows.forEach(tr => tbody.appendChild(tr));
+
+    asc = !asc;
+  });
+});
+</script>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+  const row = document.getElementById("profile-settings-row");
+  const btn = document.getElementById("profile-toggle-btn");
+
+  if (!row || !btn) return;
+
+  const inputs = row.querySelectorAll("input");
+
+  let editing = false;
+
+  btn.addEventListener("click", (e) => {
+    e.preventDefault();
+
+    editing = !editing;
+
+    inputs.forEach(input => {
+      input.readOnly = !editing;
+    });
+
+    row.classList.toggle("editing", editing);
+
+    if (editing) {
+      btn.textContent = "Save";
+      btn.classList.add("active");
+      inputs[0].focus();
+    } else {
+      btn.textContent = "Edit";
+      btn.classList.remove("active");
+
+      const data = {};
+      inputs.forEach(input => {
+        data[input.name] = input.value;
+      });
+
+      console.log("Saved:", data);
+
+      if (window.InfoToast) {
+        InfoToast.show("Profile updated");
+      }
+    }
+  });
+
+});
+
+</script>
+
+<script>
+(function () {
+
+  function initSettingsScroll() {
+    const target = document.getElementById("profile-settings-row");
+    if (!target) return;
+
+    // find ALL links dynamically
+    document.querySelectorAll(".settings-link").forEach(link => {
+
+      link.addEventListener("click", function (e) {
+        e.preventDefault();
+
+        target.scrollIntoView({
+          behavior: "smooth",
+          block: "start"
+        });
+      });
+
+    });
+  }
+
+  // run safely
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initSettingsScroll);
+  } else {
+    initSettingsScroll();
+  }
+
+})();
+</script>
+
+
+
+<script>
+const input = document.getElementById("address-input");
+const dropdown = document.getElementById("address-dropdown");
+const locationSelect = document.getElementById("location-select");
+const items = document.querySelectorAll(".dropdown-item");
+
+// Show dropdown with animation
+input.addEventListener("focus", () => {
+  dropdown.classList.add("show");
+});
+
+// Select item
+items.forEach(item => {
+  item.addEventListener("click", () => {
+    const address = item.dataset.address;
+    const area = item.dataset.area;
+
+    input.value = address;
+
+    // ✅ FIX FOR TOMSELECT
+    if (locationSelect.tomselect) {
+      locationSelect.tomselect.setValue(area);
+    } else {
+      locationSelect.value = area;
+    }
+
+    dropdown.classList.remove("show");
+  });
+});
+// Hide dropdown
+document.addEventListener("click", (e) => {
+  if (!e.target.closest(".address-group")) {
+    dropdown.classList.remove("show");
+  }
+});
+</script>
+
+
+<script>
+function initValidation() {
+
+  const submitBtn = document.querySelector(".submit-btn");
+
+  const inputs = {
+    address: document.getElementById("address-input"),
+    date: document.getElementById("pickup-date"),
+    location: document.getElementById("location-select")
+  };
+
+  function validateField(input) {
+    if (!input) return false;
+
+    let valid = true;
+
+    if (input.tagName === "SELECT") {
+      valid = input.value !== "";
+    } else {
+      valid = input.value.trim() !== "";
+    }
+
+    input.classList.toggle("input-error", !valid);
+    return valid;
+  }
+
+  function validateAll() {
+    return Object.values(inputs).every(input => validateField(input));
+  }
+
+  function updateUI() {
+    validateAll();
+
+    // 🔥 trigger main system button logic
+    if (typeof updateButtonState === "function") {
+      updateButtonState();
+    }
+  }
+
+  // =========================
+  // LISTENERS
+  // =========================
+  Object.values(inputs).forEach(input => {
+    if (!input) return;
+
+    input.addEventListener("input", updateUI);
+    input.addEventListener("change", updateUI);
+    input.addEventListener("blur", () => validateField(input));
+  });
+
+  // =========================
+  // INIT
+  // =========================
+  updateUI();
+}
+
+document.addEventListener("DOMContentLoaded", initValidation);
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+  const firstItem = document.querySelector(".dropdown-item");
+  const addressInput = document.getElementById("address-input");
+  const locationSelect = document.getElementById("location-select");
+
+  if (!firstItem || !addressInput || !locationSelect) return;
+
+  const address = firstItem.dataset.address;
+  const area = firstItem.dataset.area;
+
+  // set address
+  addressInput.value = address;
+
+  // ✅ FIX: use Tom Select API
+  if (locationSelect.tomselect) {
+    locationSelect.tomselect.setValue(area);
+  } else {
+    // fallback (if TomSelect not loaded yet)
+    locationSelect.value = area;
+  }
+
+  // trigger your system
+  addressInput.dispatchEvent(new Event("input"));
+
+});
+</script>
+
+<script>document.getElementById("notif-btn").addEventListener("click", (e) => {
+  e.stopPropagation();
+  const dd = document.getElementById("notif-dropdown");
+  dd.style.display = dd.style.display === "block" ? "none" : "block";
+});
+
+document.addEventListener("click", () => {
+  document.getElementById("notif-dropdown").style.display = "none";
+});</script>
+
+
+<script>
+const btn = document.getElementById("notif-btn");
+const dropdown = document.getElementById("notif-dropdown");
+
+btn.addEventListener("click", (e) => {
+  e.stopPropagation();
+
+  const rect = btn.getBoundingClientRect();
+
+  // position dropdown relative to viewport
+  dropdown.style.position = "fixed";
+  dropdown.style.top = rect.bottom + 10 + "px";
+
+  // 🔥 align RIGHT EDGE with button
+  dropdown.style.left = (rect.right - dropdown.offsetWidth) + "px";
+
+  dropdown.style.display =
+    dropdown.style.display === "block" ? "none" : "block";
+});
+
+// close on outside click
+document.addEventListener("click", () => {
+  dropdown.style.display = "none";
+});
+</script>
+
+
+
+<script>
+document.querySelectorAll(".snkd-table tbody tr").forEach(row => {
+  row.style.cursor = "pointer";
+
+  row.addEventListener("click", (e) => {
+    // prevent click if user clicks a button/link inside
+    if (e.target.closest("a, button")) return;
+
+    const link = row.dataset.link;
+    if (link) {
+      window.location.href = link;
+    }
+  });
+});
+</script>
+
+
+</body>
+</html>

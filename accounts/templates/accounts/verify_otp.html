@@ -1,0 +1,342 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Verify OTP | Sneaky Klean</title>
+
+<link rel="stylesheet" href="{% static 'css/dash.css' %}">
+<link rel="stylesheet" href="https://cdn.materialdesignicons.com/7.4.47/css/materialdesignicons.min.css">
+
+<style>
+body {
+  margin: 0;
+  background: #f6f6f6;
+  font-family: 'Avenir', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.otp-container {
+  max-width: 520px;
+  width: 100%;
+  background: #ffffff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.otp-header {
+  background: #000000;
+  padding: 30px;
+  text-align: center;
+}
+
+.otp-header img {
+  width: 100px;
+  margin-bottom: 10px;
+}
+
+.otp-header h2 {
+  color: #ffffff;
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.otp-body {
+  padding: 40px 30px;
+}
+
+.otp-title {
+  font-size: 22px;
+  font-weight: 600;
+  color: #000;
+  margin-bottom: 10px;
+}
+
+.otp-subtitle {
+  font-size: 14px;
+  color: #6b6b6b;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.otp-email {
+  color: #ff5a00;
+  font-weight: 600;
+}
+
+.otp-input {
+  width: 100%;
+  padding: 15px;
+  font-size: 24px;
+  letter-spacing: 8px;
+  text-align: center;
+  border: 2px solid #e0e0e0;
+  border-radius: 6px;
+  margin: 20px 0;
+  font-weight: 600;
+}
+
+.otp-input:focus {
+  outline: none;
+  border-color: #ff5a00;
+}
+
+.otp-button {
+  width: 100%;
+  padding: 15px;
+  background: #ff5a00;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.otp-button:hover {
+  background: #e04f00;
+}
+
+.otp-resend-button {
+  width: 100%;
+  padding: 15px;
+  background: #ffffff;
+  color: #ff5a00;
+  border: 2px solid #ff5a00;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.otp-resend-button:hover {
+  background: #fff5f0;
+}
+
+.otp-resend-button:disabled {
+  background: #f0f0f0;
+  color: #999;
+  border-color: #ddd;
+  cursor: not-allowed;
+}
+
+#countdown {
+  font-size: 12px;
+  color: #999;
+  margin-top: 5px;
+  text-align: center;
+}
+
+.otp-footer {
+  padding: 20px 30px;
+  font-size: 12px;
+  color: #9b9b9b;
+  text-align: center;
+  background: #f9f9f9;
+}
+
+.otp-back {
+  text-align: center;
+  margin-top: 15px;
+}
+
+.otp-back a {
+  color: #ff5a00;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.otp-back a:hover {
+  text-decoration: underline;
+}
+
+.alert {
+  padding: 12px;
+  margin-bottom: 20px;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.alert-error {
+  background: #fee;
+  color: #c00;
+  border: 1px solid #fcc;
+}
+
+.alert-success {
+  background: #efe;
+  color: #060;
+  border: 1px solid #cfc;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="otp-container">
+  <div class="otp-header">
+    <img src="https://res.cloudinary.com/dyueswnzk/image/upload/v1775666139/sneak_qb6xip.png" alt="Sneaky Klean">
+    <h2>Verify Your Identity</h2>
+  </div>
+
+  <div class="otp-body">
+    <div class="otp-title">Enter verification code</div>
+    <div class="otp-subtitle">
+      We sent a 6-digit code to <span class="otp-email">{{ email }}</span>
+    </div>
+
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+          {{ message }}
+        </div>
+      {% endfor %}
+    {% endif %}
+
+    <form method="POST" action="{% url 'accounts:verify_otp' %}">
+      {% csrf_token %}
+      <input 
+        type="text" 
+        name="otp_code" 
+        class="otp-input" 
+        placeholder="000000" 
+        maxlength="6" 
+        pattern="[0-9]{6}"
+        required 
+        autofocus
+      />
+      <button type="submit" class="otp-button">Verify & Login</button>
+    </form>
+
+    <form method="POST" action="{% url 'accounts:resend_otp' %}" id="resend-form">
+      {% csrf_token %}
+      <button type="submit" class="otp-resend-button" id="resend-btn">
+        <span class="mdi mdi-email-sync-outline"></span> Resend OTP
+      </button>
+      <div id="countdown"></div>
+    </form>
+
+    <div class="otp-back">
+      <a href="{% url 'accounts:login' %}">← Back to login</a>
+    </div>
+  </div>
+
+  <div class="otp-footer">
+    Code expires in 5 minutes. For your security, never share your verification code.
+  </div>
+</div>
+
+<script>
+// Resend cooldown timer (30 seconds)
+let resendBtn = document.getElementById('resend-btn');
+let countdown = document.getElementById('countdown');
+let cooldownTime = 30;
+let timer;
+
+function startCooldown() {
+  resendBtn.disabled = true;
+  let timeLeft = cooldownTime;
+  
+  countdown.textContent = `Wait ${timeLeft}s before resending`;
+  
+  timer = setInterval(() => {
+    timeLeft--;
+    if (timeLeft > 0) {
+      countdown.textContent = `Wait ${timeLeft}s before resending`;
+    } else {
+      clearInterval(timer);
+      resendBtn.disabled = false;
+      countdown.textContent = '';
+    }
+  }, 1000);
+}
+
+// Handle resend form submission
+document.getElementById('resend-form').addEventListener('submit', function(e) {
+  startCooldown();
+});
+
+// Start cooldown on page load (optional - prevents immediate spam)
+// startCooldown();
+</script>
+
+</body>
+</html>
+
+  <td align="right" valign="middle" style="color:#ffffff; font-size:14px; font-weight:800;">
+    One-Time Password
+  </td>
+
+</tr>
+```
+
+  </table>
+
+</td>
+</tr>
+
+<!-- Body -->
+
+<tr>
+<td style="padding:40px 30px; text-align:left;">
+
+<div style="font-size:22px; font-weight:600; color:#000; margin-bottom:10px;">
+Verify your identity
+</div>
+
+<div style="font-size:14px; color:#6b6b6b; line-height:1.6; margin-bottom:30px;">
+Use the code below to continue. Do not share this code with anyone.
+</div>
+
+<!-- OTP (Uber-style: no box, bold, large) -->
+
+<div style="
+  font-size:48px;
+  font-weight:900;
+  letter-spacing:14px;
+  color:#000000;
+  margin:30px 0;
+">
+4839
+</div>
+
+<!-- Divider -->
+
+<div style="height:1px; background:#eeeeee; margin:30px 0;"></div>
+
+<!-- Info -->
+
+<div style="font-size:13px; color:#6b6b6b; line-height:1.6;">
+This code expires in 5 minutes.  
+If you didn’t request this, you can safely ignore this email.
+</div>
+
+</td>
+</tr>
+
+<!-- Footer -->
+
+<tr>
+<td style="padding:20px 30px; font-size:12px; color:#9b9b9b; text-align:left;">
+For your security, never share your verification code.
+</td>
+</tr>
+
+</table>
+
+</td>
+</tr>
+</table>
+
+</body>
+</html>

@@ -1,0 +1,222 @@
+<!-- Frontend Form Example: How to Submit Orders with Services -->
+
+<!-- OPTION 1: Using Service IDs (Recommended) -->
+<form method="POST" action="{% url 'orders:create_order' %}" id="booking-form">
+    {% csrf_token %}
+    
+    <!-- Customer Information -->
+    <input type="text" name="full_name" placeholder="Full Name" required>
+    <input type="email" name="email" placeholder="Email" required>
+    <input type="tel" name="phone" placeholder="Phone" required>
+    <textarea name="address" placeholder="Address" required></textarea>
+    
+    <!-- Location -->
+    <select name="location" required>
+        <option value="mainland">Mainland</option>
+        <option value="island">Island</option>
+    </select>
+    
+    <!-- Pickup Date -->
+    <input type="date" name="pickup_date" required>
+    
+    <!-- Special Instructions -->
+    <textarea name="instructions" placeholder="Special instructions (optional)"></textarea>
+    
+    <!-- Discount Code -->
+    <input type="text" name="discount_code" placeholder="Discount code (optional)">
+    
+    <!-- SERVICES: Dynamically added based on user selection -->
+    <!-- These will be added by JavaScript when user selects services -->
+    <input type="hidden" name="service_ids[]" value="1">  <!-- Basic Cleaning -->
+    <input type="hidden" name="service_quantities[]" value="2">
+    
+    <input type="hidden" name="service_ids[]" value="3">  <!-- Restoration -->
+    <input type="hidden" name="service_quantities[]" value="1">
+    
+    <button type="submit">Book Now</button>
+</form>
+
+<!-- OPTION 2: Using Service Names (Backward Compatible) -->
+<form method="POST" action="{% url 'orders:create_order' %}">
+    {% csrf_token %}
+    
+    <!-- Customer fields same as above -->
+    
+    <!-- Services as comma-separated names -->
+    <input type="hidden" name="services" value="Basic Cleaning,Deep Cleaning">
+    
+    <button type="submit">Book Now</button>
+</form>
+
+<!-- ========================================== -->
+<!-- JavaScript Example: Building Form Dynamically -->
+<!-- ========================================== -->
+<script>
+// 1. Fetch services from API on page load
+document.addEventListener('DOMContentLoaded', function() {
+    fetchServices();
+});
+
+async function fetchServices() {
+    try {
+        const response = await fetch('/api/services/');
+        const services = await response.json();
+        
+        // Build service selection UI
+        const container = document.querySelector('.services-grid');
+        container.innerHTML = '';
+        
+        services.forEach(service => {
+            const card = createServiceCard(service);
+            container.appendChild(card);
+        });
+    } catch (error) {
+        console.error('Failed to fetch services:', error);
+    }
+}
+
+function createServiceCard(service) {
+    const div = document.createElement('div');
+    div.className = 'service-card';
+    div.dataset.serviceId = service.id;
+    div.dataset.price = service.price;
+    div.dataset.name = service.name;
+    
+    div.innerHTML = `
+        <i class="${service.icon}"></i>
+        <h3>${service.name}</h3>
+        <p>${service.description}</p>
+        <div class="price">₦${service.price.toLocaleString()}</div>
+        <div class="quantity-control">
+            <button type="button" class="qty-minus">-</button>
+            <input type="number" class="quantity" value="1" min="1" max="10">
+            <button type="button" class="qty-plus">+</button>
+        </div>
+        <button type="button" class="select-service">Select</button>
+    `;
+    
+    // Add click handler
+    div.querySelector('.select-service').addEventListener('click', function() {
+        div.classList.toggle('selected');
+        updateTotal();
+    });
+    
+    return div;
+}
+
+// 2. On form submit, add service IDs to form
+document.getElementById('booking-form').addEventListener('submit', function(e) {
+    // Remove any existing service inputs
+    this.querySelectorAll('input[name="service_ids[]"]').forEach(el => el.remove());
+    this.querySelectorAll('input[name="service_quantities[]"]').forEach(el => el.remove());
+    
+    // Get all selected services
+    const selectedServices = document.querySelectorAll('.service-card.selected');
+    
+    if (selectedServices.length === 0) {
+        e.preventDefault();
+        alert('Please select at least one service');
+        return;
+    }
+    
+    // Add service IDs and quantities to form
+    selectedServices.forEach(card => {
+        const serviceId = card.dataset.serviceId;
+        const quantity = card.querySelector('.quantity').value;
+        
+        // Create hidden inputs
+        const idInput = document.createElement('input');
+        idInput.type = 'hidden';
+        idInput.name = 'service_ids[]';
+        idInput.value = serviceId;
+        this.appendChild(idInput);
+        
+        const qtyInput = document.createElement('input');
+        qtyInput.type = 'hidden';
+        qtyInput.name = 'service_quantities[]';
+        qtyInput.value = quantity;
+        this.appendChild(qtyInput);
+    });
+    
+    // Form will now submit with service_ids[] and service_quantities[]
+});
+
+// 3. Update total price calculation
+function updateTotal() {
+    const selectedServices = document.querySelectorAll('.service-card.selected');
+    let subtotal = 0;
+    
+    selectedServices.forEach(card => {
+        const price = parseFloat(card.dataset.price);
+        const quantity = parseInt(card.querySelector('.quantity').value);
+        subtotal += price * quantity;
+    });
+    
+    const vat = subtotal * 0.075;
+    const delivery = 3500;
+    const total = subtotal + vat + delivery;
+    
+    // Update UI
+    document.querySelector('.subtotal').textContent = `₦${subtotal.toLocaleString()}`;
+    document.querySelector('.vat').textContent = `₦${vat.toLocaleString()}`;
+    document.querySelector('.delivery').textContent = `₦${delivery.toLocaleString()}`;
+    document.querySelector('.total').textContent = `₦${total.toLocaleString()}`;
+}
+</script>
+
+<!-- ========================================== -->
+<!-- API Response Format -->
+<!-- ========================================== -->
+<!--
+GET /api/services/
+
+Returns:
+[
+    {
+        "id": 1,
+        "name": "Basic Cleaning",
+        "description": "Standard cleaning for everyday sneakers. Includes surface cleaning, deodorizing, and basic stain removal.",
+        "price": 7000.0,
+        "icon": "mdi-shoe-sneaker",
+        "estimated_duration": "1-2 hours"
+    },
+    {
+        "id": 2,
+        "name": "Deep Cleaning",
+        "description": "Thorough deep clean for heavily soiled sneakers...",
+        "price": 12000.0,
+        "icon": "mdi-spray-bottle",
+        "estimated_duration": "2-3 hours"
+    },
+    ...
+]
+-->
+
+<!-- ========================================== -->
+<!-- Expected POST Data Format -->
+<!-- ========================================== -->
+<!--
+POST /order/create/
+
+Form Data:
+{
+    "full_name": "John Doe",
+    "email": "john@example.com",
+    "phone": "+2348012345678",
+    "address": "123 Main Street, Lagos",
+    "location": "mainland",
+    "pickup_date": "2026-05-01",
+    "instructions": "Please be careful with the laces",
+    "discount_code": "SNKYLN",
+    "service_ids[]": [1, 3],  // Array of service IDs
+    "service_quantities[]": [2, 1]  // Corresponding quantities
+}
+
+Backend will:
+1. Fetch Service objects with ids 1 and 3
+2. Create Order with calculated totals
+3. Create OrderItem for Service 1 (qty: 2)
+4. Create OrderItem for Service 3 (qty: 1)
+5. Send confirmation emails
+6. Redirect to login page
+-->

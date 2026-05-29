@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <link rel="stylesheet" href="https://cdn.materialdesignicons.com/7.4.47/css/materialdesignicons.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Boldonse&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Kode+Mono:wght@400..700&family=Kumbh+Sans:wght,YOPQ@100..900,300&family=Onest:wght@100..900&display=swap" rel="stylesheet">
+   <link rel="stylesheet" href="css/dash.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+<link href="https://cdn.jsdelivr.net/npm/tom-select/dist/css/tom-select.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/tom-select/dist/js/tom-select.complete.min.js"></script>
+
+
+      <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
+      <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png">
+      <link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png">
+      <link rel="manifest" href="/site.webmanifest">
+
+      <!-- Primary Meta Tags -->
+<title>Login | Sneaky Klean</title>
+<meta name="title" content="Login | Sneaky Klean" />
+<meta name="description" content="SoleCare by Sneaky Klean. " />
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://care.sneakyklean.com/" />
+<meta property="og:title" content="Login | Sneaky Klean" />
+<meta property="og:description" content="SoleCare by Sneaky Klean." />
+<meta property="og:image" content="https://res.cloudinary.com/dyueswnzk/image/upload/v1775420826/thumbnails-support.001_10_dej6fq.jpg" />
+
+<!-- X (Twitter) -->
+<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content="https://care.sneakyklean.com/" />
+<meta property="twitter:title" content="Login | Sneaky Klean" />
+<meta property="twitter:description" content="SoleCare by Sneaky Klean." />
+<meta property="twitter:image" content="https://res.cloudinary.com/dyueswnzk/image/upload/v1775420826/thumbnails-support.001_10_dej6fq.jpg" />
+
+
+
+
+
+
+ 
+</head>
+
+<body>
+
+<style>
+  
+@media (max-width: 768px) {
+
+
+  html, body {
+  height: 100%;
+  overflow: hidden; /* 🔥 disables scroll */
+}
+
+.snkd-container {
+  height: 100dvh; /* 🔥 modern mobile-safe */
+  display: flex;
+  justify-content: center; padding: 5px;
+  align-items: center;
+}
+
+
+.snkd-bg {
+  position: absolute;
+  inset: 0;
+}
+
+.snkd-right {
+  max-width: 100%;
+}
+
+
+body {
+  margin: 0;
+  height: 100dvh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+
+.snkd-logo{        margin-left: -24px;}
+
+}
+
+</style>
+
+
+<div class="snkd-bg" id="snkd-bg"></div>
+
+<div class="snkd-container">
+
+  <!-- Logo -->
+  <div class="snkd-logo">
+    <div class="snkd-logo-box reveal-up"><img width="50px" src="https://res.cloudinary.com/dyueswnzk/image/upload/v1775414377/SK_LOGO_ICON__1_2_m3r4mo.svg"></div>
+    <div class="reveal-up">SoleCare</div>
+  </div>
+
+  <!-- Right Panel -->
+  <div class="snkd-right">
+
+    <div class="snkd-card">
+      <div class="snkd-card-header"><span class="mdi mdi-information ikon"></span> Please verify your credentials</div>
+      <input class="snkd-input" type="text" placeholder="you@sneakyklean.com" />
+
+
+  <div class="snkd-row">
+  <div class="snkd-toggle-wrap">
+    <label class="snkd-switch">
+      <input type="checkbox" />
+      <span class="snkd-slider"></span>
+    </label>
+    <span class="snkd-toggle-label">Store Credentials</span>
+  </div>
+
+  <button class="snkd-button">Send OTP</button>
+</div>
+    </div>
+
+
+  </div>
+</div>
+
+<div id="snkd-toast" class="snkd-toast">OTP Sent</div>
+
+<script>const images = [
+  "https://res.cloudinary.com/dyueswnzk/image/upload/v1775415750/shyam-mishra-syJVsEvoHUc-unsplash_yybzhv.webp",
+  "https://res.cloudinary.com/dyueswnzk/image/upload/v1775416147/ryan-waring-j7zu2kpTnwY-unsplash_fakdam.webp",
+  "https://res.cloudinary.com/dyueswnzk/image/upload/v1775416169/cream-woman-sneakers-with-colourful-stones-it-golden-details_yo07g5.webp",
+  "https://res.cloudinary.com/dyueswnzk/image/upload/v1775417138/close-up-person-wearing-futuristic-sneakers_p0ff5h.webp",
+  "https://res.cloudinary.com/dyueswnzk/image/upload/v1775417788/sanju-pandita-36MiHf2KKr8-unsplash_nsf8bq.webp"
+];
+
+const bg = document.getElementById("snkd-bg");
+
+// Pick random image
+const randomImage = images[Math.floor(Math.random() * images.length)];
+bg.style.backgroundImage = `url(${randomImage})`;
+
+// Blur → clear animation
+window.addEventListener("load", () => {
+  setTimeout(() => {
+    bg.classList.add("snkd-loaded");
+  }, 100);
+});</script>
+
+
+<script id="snkd-final-js">
+
+
+const input = document.querySelector(".snkd-input");
+const button = document.querySelector(".snkd-button");
+const toggle = document.querySelector(".snkd-switch input");
+const toast = document.getElementById("snkd-toast");
+
+let isOtpStage = false;
+let savedEmailTemp = "";
+
+/* =========================
+   🔔 TOAST FUNCTION
+========================= */
+function showToast(message = "OTP Sent") {
+  toast.textContent = message;
+  toast.classList.add("snkd-show");
+
+  setTimeout(() => {
+    toast.classList.remove("snkd-show");
+  }, 2500);
+}
+
+/* =========================
+   🔁 LOAD SAVED EMAIL
+========================= */
+window.addEventListener("DOMContentLoaded", () => {
+  const savedEmail = localStorage.getItem("snkd-email");
+
+  if (savedEmail) {
+    input.value = savedEmail;
+    toggle.checked = true;
+  }
+});
+
+/* =========================
+   📧 EMAIL VALIDATION
+========================= */
+function isValidEmail(email) {
+  return /\S+@\S+\.\S+/.test(email);
+}
+
+/* =========================
+   ✏️ RESET ERROR ON TYPE
+========================= */
+input.addEventListener("input", () => {
+  input.style.borderColor = "";
+});
+
+/* =========================
+   🔘 BUTTON CLICK
+========================= */
+button.addEventListener("click", () => {
+
+  /* ===== STEP 1: EMAIL ===== */
+  if (!isOtpStage) {
+    const email = input.value.trim();
+
+    if (!isValidEmail(email)) {
+      input.style.borderColor = "red";
+      input.focus();
+      showToast("Enter a valid email");
+      return;
+    }
+
+    if (toggle.checked) {
+      localStorage.setItem("snkd-email", email);
+    } else {
+      localStorage.removeItem("snkd-email");
+    }
+
+    savedEmailTemp = email;
+
+    input.value = "";
+    input.placeholder = "Enter OTP";
+    input.type = "text";
+    input.focus();
+
+    button.textContent = "Verify OTP";
+    isOtpStage = true;
+
+    showToast("OTP Sent");
+
+    console.log("OTP sent to:", email);
+  }
+
+  /* ===== STEP 2: OTP ===== */
+  else {
+    const otp = input.value.trim();
+
+    if (otp.length < 4) {
+      input.style.borderColor = "red";
+      showToast("Invalid OTP");
+      return;
+    }
+
+    console.log("OTP entered:", otp);
+
+    button.textContent = "Verifying...";
+    button.style.background = "#2f80ed";
+    button.disabled = true;
+
+    setTimeout(() => {
+      button.textContent = "Verified";
+      showToast("Login Successful");
+
+      input.disabled = true;
+      toggle.disabled = true;
+
+      // 👉 REDIRECT TO YOUR LIVE PAGE
+      setTimeout(() => {
+        window.location.href =
+          "https://kolapo.com/sk/dash?email=" + encodeURIComponent(savedEmailTemp);
+      }, 1000);
+
+    }, 1200);
+  }
+});
+</script>
+
+
+<script>// =========================
+// REVEAL ON SCROLL (SAFE)
+// =========================
+(function () {
+
+  function initReveal() {
+    const elements = document.querySelectorAll(".reveal-up");
+
+    if (!elements.length) return;
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("active");
+
+          // OPTIONAL: animate only once
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.15 // trigger when 15% visible
+    });
+
+    elements.forEach(el => observer.observe(el));
+  }
+
+  document.addEventListener("DOMContentLoaded", initReveal);
+
+})();</script>
+
+</body>
+</html>
