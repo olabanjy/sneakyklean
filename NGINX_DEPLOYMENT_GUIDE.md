@@ -29,6 +29,7 @@ cp .env.production.example .env.production
 Set these values carefully:
 
 - `ALLOWED_HOSTS=localhost,127.0.0.1,your-domain.com,www.your-domain.com`
+- `CSRF_TRUSTED_ORIGINS=https://your-domain.com,https://www.your-domain.com`
 - `SECRET_KEY` to a long random value
 - Database password to a strong password
 - Real email and ZeptoMail credentials

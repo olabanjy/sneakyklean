@@ -18,6 +18,20 @@ DEBUG = config('DEBUG', default=True, cast=bool)
 
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1,0.0.0.0').split(',')
 
+CSRF_TRUSTED_ORIGINS = [
+    origin.strip()
+    for origin in config('CSRF_TRUSTED_ORIGINS', default='').split(',')
+    if origin.strip()
+]
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+if not DEBUG:
+    CSRF_COOKIE_SECURE = True
+    SESSION_COOKIE_SECURE = True
+    SECURE_BROWSER_XSS_FILTER = True
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -170,4 +184,3 @@ CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'UTC'
 CELERY_TASK_TRACK_STARTED = True
 CELERY_TASK_TIME_LIMIT = 30 * 60  # 30 minutes
-
