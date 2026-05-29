@@ -179,10 +179,10 @@ dev: up-logs
 
 # Production build
 prod-build:
-	docker compose -f docker-compose.prod.yml build
+	docker compose --env-file .env.production -f docker-compose.deploy.yml build
 
 prod-up:
-	docker compose -f docker-compose.prod.yml up -d
+	docker compose --env-file .env.production -f docker-compose.deploy.yml up -d
 
 # Show all URLs
 urls:

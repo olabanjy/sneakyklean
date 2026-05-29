@@ -568,6 +568,7 @@ For issues or questions, contact: care@sneakyklean.com
    - Set up reverse proxy to handle SSL termination
    - Configure Let's Encrypt for HTTPS
    - Add rate limiting and security headers
+   - See [NGINX_DEPLOYMENT_GUIDE.md](NGINX_DEPLOYMENT_GUIDE.md) for a full server-side setup
 
 6. **Monitor Services**
    ```bash
