@@ -145,7 +145,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   function setGridOpen(open) {
     isOpen = open;
-    grid.hidden = !open;
+    grid.style.display = open ? "grid" : "none";
     grid.classList.toggle("is-open", open);
     updateToggleText();
   }
@@ -422,7 +422,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   /* =========================
      INIT
   ========================= */
-  grid.hidden = true;
+  grid.style.display = "none";
   submitBtn.disabled = true;
   submitBtn.style.background = "#999";
 
