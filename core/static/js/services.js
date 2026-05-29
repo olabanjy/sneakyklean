@@ -139,12 +139,20 @@ document.addEventListener("DOMContentLoaded", async () => {
     } else {
       toggleBtn.innerHTML = `<span class="mdi mdi-swap-horizontal-circle-outline"></span> Change Service`;
     }
+
+    toggleBtn.setAttribute("aria-expanded", String(isOpen));
   }
 
-  toggleBtn.addEventListener("click", () => {
-    isOpen = !isOpen;
-    grid.style.display = isOpen ? "grid" : "none";
+  function setGridOpen(open) {
+    isOpen = open;
+    grid.hidden = !open;
+    grid.classList.toggle("is-open", open);
     updateToggleText();
+  }
+
+  toggleBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    setGridOpen(!isOpen);
   });
 
   /* =========================
@@ -414,7 +422,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   /* =========================
      INIT
   ========================= */
-  grid.style.display = "none";
+  grid.hidden = true;
   submitBtn.disabled = true;
   submitBtn.style.background = "#999";
 
