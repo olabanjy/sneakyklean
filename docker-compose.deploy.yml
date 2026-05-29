@@ -41,7 +41,7 @@ services:
              python manage.py collectstatic --noinput &&
              exec gunicorn --bind 0.0.0.0:8000 --workers 3 --timeout 120 sneakyklean.wsgi:application"
     ports:
-      - "8000:8000"
+      - "${HOST_WEB_PORT:-8000}:8000"
     environment:
       DEBUG: "False"
       SECRET_KEY: ${SECRET_KEY}

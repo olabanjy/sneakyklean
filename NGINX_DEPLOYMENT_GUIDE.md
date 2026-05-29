@@ -5,7 +5,7 @@ This guide shows how to run **Nginx directly on the server** as the public entry
 The setup looks like this:
 
 - Internet traffic hits Nginx on ports `80` and `443`
-- Nginx reverse proxies requests to Docker on `127.0.0.1:8000`
+- Nginx reverse proxies requests to Docker on `127.0.0.1:${HOST_WEB_PORT}`
 - Django serves the app through Gunicorn
 - Postgres and Redis stay internal to Docker
 
@@ -28,12 +28,13 @@ cp .env.production.example .env.production
 
 Set these values carefully:
 
-- `ALLOWED_HOSTS=your-domain.com,www.your-domain.com`
+- `ALLOWED_HOSTS=localhost,127.0.0.1,your-domain.com,www.your-domain.com`
 - `SECRET_KEY` to a long random value
 - Database password to a strong password
 - Real email and ZeptoMail credentials
 
 If you are using HTTPS, you should also make sure your domain is correct everywhere you expose public URLs.
+If you browse the site by IP address, add that IP to `ALLOWED_HOSTS` too or Django will return `400 Bad Request`.
 
 ## 3. Start the App Stack
 
@@ -45,7 +46,7 @@ docker compose --env-file .env.production -f docker-compose.deploy.yml up -d --b
 
 This will start:
 
-- `web` on `127.0.0.1:8000` inside Docker, exposed to the host on port `8000`
+- `web` inside Docker on port `8000`, exposed to the host on `HOST_WEB_PORT`
 - `celery` for background jobs
 - `db` for Postgres
 - `redis` for the Celery broker and result backend
@@ -55,6 +56,8 @@ Check that the app is reachable locally on the server:
 ```bash
 curl http://127.0.0.1:8000/
 ```
+
+If `8000` is already in use on the server, set `HOST_WEB_PORT` in `.env.production` to another free port and point Nginx to that port instead.
 
 ## 4. Install Nginx
 
@@ -228,4 +231,3 @@ Increase `client_max_body_size` in the Nginx server block.
 4. Enable HTTPS with Certbot
 5. Smoke test the site
 6. Monitor logs after launch
-
