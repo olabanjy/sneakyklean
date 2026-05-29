@@ -1,4 +1,7 @@
 .PHONY: help build up down restart logs shell migrate makemigrations createsuperuser populate test clean prune
+.PHONY: prod-build prod-up prod-down prod-restart prod-logs prod-logs-web prod-logs-celery prod-status prod-ps prod-migrate prod-collectstatic prod-check prod-shell prod-bash prod-setup prod-stop
+
+PROD_COMPOSE := docker compose --env-file .env.production -f docker-compose.deploy.yml
 
 # Help command
 help:
@@ -26,6 +29,22 @@ help:
 	@echo "make rebuild        - Full rebuild (prune, build, migrate, populate)"
 	@echo "make status         - Show service status"
 	@echo "make ps             - Show running containers"
+	@echo "make prod-build     - Build production images"
+	@echo "make prod-up        - Start production stack"
+	@echo "make prod-down      - Stop production stack"
+	@echo "make prod-restart   - Restart production stack"
+	@echo "make prod-logs      - Follow production logs"
+	@echo "make prod-logs-web  - Follow production web logs"
+	@echo "make prod-logs-celery - Follow production celery logs"
+	@echo "make prod-status    - Show production service status"
+	@echo "make prod-ps        - Show production containers"
+	@echo "make prod-migrate   - Run production migrations"
+	@echo "make prod-collectstatic - Collect production static files"
+	@echo "make prod-check     - Run production Django checks"
+	@echo "make prod-shell     - Open production Django shell"
+	@echo "make prod-bash      - Open bash in production web container"
+	@echo "make prod-stop      - Stop production services"
+	@echo "make prod-setup     - Build, start, migrate, and collect static for prod"
 
 # Build Docker images
 build:
@@ -179,10 +198,53 @@ dev: up-logs
 
 # Production build
 prod-build:
-	docker compose --env-file .env.production -f docker-compose.deploy.yml build
+	$(PROD_COMPOSE) build
 
 prod-up:
-	docker compose --env-file .env.production -f docker-compose.deploy.yml up -d
+	$(PROD_COMPOSE) up -d --build
+
+prod-down:
+	$(PROD_COMPOSE) down
+
+prod-restart:
+	$(PROD_COMPOSE) restart
+
+prod-logs:
+	$(PROD_COMPOSE) logs -f
+
+prod-logs-web:
+	$(PROD_COMPOSE) logs -f web
+
+prod-logs-celery:
+	$(PROD_COMPOSE) logs -f celery
+
+prod-status:
+	$(PROD_COMPOSE) ps
+
+prod-ps:
+	$(PROD_COMPOSE) ps
+
+prod-shell:
+	$(PROD_COMPOSE) exec web python manage.py shell
+
+prod-bash:
+	$(PROD_COMPOSE) exec web bash
+
+prod-migrate:
+	$(PROD_COMPOSE) exec web python manage.py migrate --noinput
+
+prod-collectstatic:
+	$(PROD_COMPOSE) exec web python manage.py collectstatic --noinput
+
+prod-check:
+	$(PROD_COMPOSE) exec web python manage.py check
+
+prod-stop:
+	$(PROD_COMPOSE) stop
+
+prod-setup: prod-build prod-up prod-migrate prod-collectstatic
+	@echo "Production stack started."
+	@echo "If this is a fresh deployment, create a superuser with: $(PROD_COMPOSE) exec web python manage.py createsuperuser"
 
 # Show all URLs
 urls:
