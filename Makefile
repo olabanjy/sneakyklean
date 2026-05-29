@@ -1,5 +1,5 @@
 .PHONY: help build up down restart logs shell migrate makemigrations createsuperuser populate test clean prune
-.PHONY: prod-build prod-up prod-down prod-restart prod-logs prod-logs-web prod-logs-celery prod-status prod-ps prod-migrate prod-collectstatic prod-check prod-shell prod-bash prod-setup prod-stop
+.PHONY: prod-build prod-up prod-down prod-restart prod-logs prod-logs-web prod-logs-celery prod-status prod-ps prod-migrate prod-collectstatic prod-check prod-shell prod-bash prod-populate prod-superuser prod-setup prod-stop
 
 PROD_COMPOSE := docker compose --env-file .env.production -f docker-compose.deploy.yml
 
@@ -40,6 +40,8 @@ help:
 	@echo "make prod-ps        - Show production containers"
 	@echo "make prod-migrate   - Run production migrations"
 	@echo "make prod-collectstatic - Collect production static files"
+	@echo "make prod-populate  - Seed production services"
+	@echo "make prod-superuser - Create a production superuser"
 	@echo "make prod-check     - Run production Django checks"
 	@echo "make prod-shell     - Open production Django shell"
 	@echo "make prod-bash      - Open bash in production web container"
@@ -236,13 +238,19 @@ prod-migrate:
 prod-collectstatic:
 	$(PROD_COMPOSE) exec web python manage.py collectstatic --noinput
 
+prod-populate:
+	$(PROD_COMPOSE) exec web python manage.py populate_services
+
+prod-superuser:
+	$(PROD_COMPOSE) exec web python manage.py createsuperuser
+
 prod-check:
 	$(PROD_COMPOSE) exec web python manage.py check
 
 prod-stop:
 	$(PROD_COMPOSE) stop
 
-prod-setup: prod-build prod-up prod-migrate prod-collectstatic
+prod-setup: prod-build prod-up prod-migrate prod-collectstatic prod-populate
 	@echo "Production stack started."
 	@echo "If this is a fresh deployment, create a superuser with: $(PROD_COMPOSE) exec web python manage.py createsuperuser"
 
