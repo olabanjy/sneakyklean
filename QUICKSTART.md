@@ -196,7 +196,7 @@ EMAIL_PORT=587
 EMAIL_HOST_USER=your-email@yourdomain.com
 EMAIL_HOST_PASSWORD=your-app-password
 EMAIL_USE_TLS=True
-DEFAULT_FROM_EMAIL=noreply@sneakyklean.com
+DEFAULT_FROM_EMAIL=Sneaky Klean <noreply@arroweye.pro>
 ADMIN_EMAIL=admin@sneakyklean.com
 ```
 

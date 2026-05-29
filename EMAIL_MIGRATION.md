@@ -48,7 +48,7 @@ EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 ```python
 ZEPTO_API_KEY = config('ZEPTO_API_KEY', default='')
 ZEPTO_API_BASE_URL = config('ZEPTO_API_BASE_URL', default='https://api.zeptomail.com/v1.1')
-DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL', default='Sneaky Klean <noreply@sneakyklean.com>')
+DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL', default='Sneaky Klean <noreply@arroweye.pro>')
 ```
 
 #### `.env.example`
@@ -65,7 +65,7 @@ EMAIL_USE_TLS=True
 ```env
 ZEPTO_API_KEY=your-zeptomail-api-key-here
 ZEPTO_API_BASE_URL=https://api.zeptomail.com/v1.1
-DEFAULT_FROM_EMAIL=Sneaky Klean <noreply@sneakyklean.com>
+DEFAULT_FROM_EMAIL=Sneaky Klean <noreply@arroweye.pro>
 ```
 
 ### 4. Dependencies
@@ -115,7 +115,7 @@ docker-compose build
    ```env
    ZEPTO_API_KEY=your-actual-api-key-from-zeptomail
    ZEPTO_API_BASE_URL=https://api.zeptomail.com/v1.1
-   DEFAULT_FROM_EMAIL=Sneaky Klean <noreply@yourdomain.com>
+   DEFAULT_FROM_EMAIL=Sneaky Klean <noreply@arroweye.pro>
    ```
 
 ### Step 3: Test Email Sending

@@ -33,6 +33,7 @@ Set these values carefully:
 - `SECRET_KEY` to a long random value
 - Database password to a strong password
 - Real email and ZeptoMail credentials
+- `DEFAULT_FROM_EMAIL=Sneaky Klean <noreply@arroweye.pro>` or another verified sender address
 
 If you are using HTTPS, you should also make sure your domain is correct everywhere you expose public URLs.
 If you browse the site by IP address, add that IP to `ALLOWED_HOSTS` too or Django will return `400 Bad Request`.

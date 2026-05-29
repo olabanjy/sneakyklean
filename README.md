@@ -91,7 +91,7 @@ DB_PORT=5432
 # ZeptoMail API (API-based email sending)
 ZEPTO_API_KEY=your-zeptomail-api-key-here
 ZEPTO_API_BASE_URL=https://api.zeptomail.com/v1.1
-DEFAULT_FROM_EMAIL=Sneaky Klean <noreply@sneakyklean.com>
+DEFAULT_FROM_EMAIL=Sneaky Klean <noreply@arroweye.pro>
 
 # Admin
 ADMIN_EMAIL=admin@sneakyklean.com
@@ -119,7 +119,7 @@ ZeptoMail is used for reliable transactional email delivery (OTP codes, order up
 
 4. **Configure From Address**
    - Update `DEFAULT_FROM_EMAIL` in `.env` to use your verified domain
-   - Format: `Sneaky Klean <noreply@yourdomain.com>`
+   - Format: `Sneaky Klean <noreply@arroweye.pro>`
 
 **Note**: ZeptoMail requires domain verification before sending emails. For testing, use the default sending domain provided by ZeptoMail.
 
