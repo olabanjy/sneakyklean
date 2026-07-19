@@ -12,16 +12,17 @@ const deliveryEl = document.getElementById("delivery");
 const serviceNameEl = document.getElementById("selected-service");
 
 const submitBtn = document.querySelector(".submit-btn");
+const form = document.getElementById("dashboard-pickup-form");
 
 /* INPUTS */
 const inputs = {
-  name: document.querySelector('input[name="full_name"]'),
-  phone: document.querySelector('input[name="phone"]'),
-  email: document.querySelector('input[name="email"]'),
-  address: document.querySelector('#address-input'),
-  date: document.getElementById("pickup-date"),
-  quantity: document.querySelector('input[name="quantity"]'),
-  location: document.getElementById("location-select")
+  name: form?.querySelector('input[name="full_name"]'),
+  phone: form?.querySelector('input[name="phone"]'),
+  email: form?.querySelector('input[name="email"]'),
+  address: form?.querySelector('#address-input'),
+  date: form?.querySelector("#pickup-date"),
+  quantity: form?.querySelector('input[name="quantity"]'),
+  location: form?.querySelector("#location-select")
 };
 
 /* =========================
@@ -49,7 +50,8 @@ if (discountBtn) {
       discountApplied = true;
       discountValue = 2000;
 
-      discountInput.disabled = true;
+      // Read-only fields are still submitted; disabled fields are not.
+      discountInput.readOnly = true;
       discountBtn.disabled = true;
       discountBtn.textContent = "Applied";
 
@@ -132,14 +134,13 @@ function getTotalServicePrice() {
 function updateToggleText() {
   if (isOpen) {
     toggleBtn.textContent = "− Hide selection";
-    return;
-  }
-
-  if (window.selectedServices.length === 0) {
+  } else if (window.selectedServices.length === 0) {
     toggleBtn.textContent = "+ Select Service";
   } else {
     toggleBtn.innerHTML = `<span class="mdi mdi-swap-horizontal-circle-outline"></span> Change Service`;
   }
+
+  toggleBtn.setAttribute("aria-expanded", String(isOpen));
 }
 
 /* =========================
@@ -313,10 +314,16 @@ function updatePrice() {
    VALIDATION
 ========================= */
 function isValid() {
+  const quantity = Number.parseInt(inputs.quantity?.value, 10);
+
   return (
-    inputs.address.value.trim() !== "" &&
-    inputs.date.value.trim() !== "" &&
-    inputs.location.value !== "" &&
+    inputs.name?.value.trim() !== "" &&
+    inputs.phone?.value.trim() !== "" &&
+    inputs.email?.value.trim() !== "" &&
+    inputs.address?.value.trim() !== "" &&
+    inputs.date?.value.trim() !== "" &&
+    inputs.location?.value !== "" &&
+    Number.isInteger(quantity) && quantity > 0 &&
     window.selectedServices.length > 0
   );
 }
@@ -349,6 +356,41 @@ Object.values(inputs).forEach(input => {
 
   input.addEventListener("change", updateButtonState);
 });
+
+/* =========================
+   FORM SUBMISSION
+========================= */
+if (form) {
+  form.addEventListener("submit", (event) => {
+    if (!isValid()) {
+      event.preventDefault();
+      updateButtonState();
+      return;
+    }
+
+    form.querySelectorAll('input[data-service-field]').forEach(input => input.remove());
+
+    const servicesInput = document.createElement("input");
+    servicesInput.type = "hidden";
+    servicesInput.name = "services";
+    servicesInput.value = window.selectedServices.map(service => service.name).join(",");
+    servicesInput.dataset.serviceField = "true";
+    form.appendChild(servicesInput);
+
+    const quantity = window.selectedServices.length > 1
+      ? 1
+      : Math.max(1, parseInt(inputs.quantity.value, 10) || 1);
+
+    window.selectedServices.forEach(() => {
+      const quantityInput = document.createElement("input");
+      quantityInput.type = "hidden";
+      quantityInput.name = "service_quantities[]";
+      quantityInput.value = quantity;
+      quantityInput.dataset.serviceField = "true";
+      form.appendChild(quantityInput);
+    });
+  });
+}
 
 /* =========================
    INIT

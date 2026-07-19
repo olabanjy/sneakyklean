@@ -1818,6 +1818,13 @@ transform: translateY(-50%) scale(1.1);
   background: #fff;
 }
 
+#dashboard-pickup-form {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+}
+
 /* SCROLL AREA */
 .pickup-scroll {
   flex: 1;

@@ -37,6 +37,8 @@ def dashboard_view(request):
 @require_http_methods(["POST"])
 def create_order_view(request):
     """Create a new order from booking form with services from database."""
+    redirect_target = 'orders:dashboard' if request.user.is_authenticated else 'core:index'
+
     try:
         # Get form data
         full_name = request.POST.get('full_name', '').strip()
@@ -47,6 +49,13 @@ def create_order_view(request):
         pickup_date_str = request.POST.get('pickup_date', '')
         special_instructions = request.POST.get('instructions', '').strip()
         discount_code = request.POST.get('discount_code', '').strip().upper()
+
+        # An authenticated booking must always belong to the signed-in account.
+        # Do not trust editable/hidden identity fields sent by the browser.
+        if request.user.is_authenticated:
+            email = request.user.email
+            full_name = request.user.full_name or full_name
+            phone = request.user.phone or phone
         
         # Get selected service IDs and quantities (can be multiple services)
         service_ids = request.POST.getlist('service_ids[]')  # Array of service IDs
@@ -58,30 +67,49 @@ def create_order_view(request):
             if services_str:
                 # Map service names to IDs from database
                 service_names = [s.strip() for s in services_str.split(',')]
-                services = Service.objects.filter(name__in=service_names, is_active=True)
+                services_by_name = {
+                    service.name: service
+                    for service in Service.objects.filter(name__in=service_names, is_active=True)
+                }
+                # Keep the browser's selection order aligned with its quantities.
+                services = [
+                    services_by_name[name]
+                    for name in service_names
+                    if name in services_by_name
+                ]
                 service_ids = [str(s.id) for s in services]
-                service_quantities = ['1'] * len(service_ids)  # Default quantity 1
+                if not service_quantities:
+                    quantity = request.POST.get('quantity', '1')
+                    service_quantities = [quantity] * len(service_ids)
         
         # Validate required fields
         if not all([full_name, email, phone, address, location, pickup_date_str]) or not service_ids:
             messages.error(request, 'Please fill in all required fields and select at least one service.')
-            return redirect('core:index')
+            return redirect(redirect_target)
         
         # Parse pickup date
         try:
             pickup_date = datetime.strptime(pickup_date_str, '%Y-%m-%d').date()
         except ValueError:
             messages.error(request, 'Invalid pickup date format.')
-            return redirect('core:index')
+            return redirect(redirect_target)
+
+        if pickup_date < timezone.localdate():
+            messages.error(request, 'Pickup date cannot be in the past.')
+            return redirect(redirect_target)
         
         # Get or create user
-        user, created = User.objects.get_or_create(
-            email=email,
-            defaults={
-                'full_name': full_name,
-                'phone': phone
-            }
-        )
+        if request.user.is_authenticated:
+            user = request.user
+            created = False
+        else:
+            user, created = User.objects.get_or_create(
+                email=email,
+                defaults={
+                    'full_name': full_name,
+                    'phone': phone
+                }
+            )
         
         # Update user info if exists
         if not created:
@@ -116,7 +144,7 @@ def create_order_view(request):
         
         if not selected_services:
             messages.error(request, 'No valid services selected.')
-            return redirect('core:index')
+            return redirect(redirect_target)
         
         # Calculate pricing
         vat = subtotal * Decimal('0.075')  # 7.5% VAT
@@ -147,6 +175,8 @@ def create_order_view(request):
         # Create order
         order = Order.objects.create(
             user=user,
+            service_type=selected_services[0]['service'].name,
+            quantity=sum(item['quantity'] for item in selected_services),
             full_name=full_name,
             email=email,
             phone=phone,
@@ -188,11 +218,13 @@ def create_order_view(request):
             print(f"Failed to queue emails: {e}")
         
         messages.success(request, f'Order {order.order_number} created successfully! Check your email for confirmation.')
+        if request.user.is_authenticated:
+            return redirect('orders:dashboard')
         return redirect('accounts:login')
         
     except Exception as e:
         messages.error(request, f'Failed to create order: {str(e)}')
-        return redirect('core:index')
+        return redirect(redirect_target)
 
 
 @require_http_methods(["GET", "POST"])

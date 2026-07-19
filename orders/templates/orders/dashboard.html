@@ -505,9 +505,15 @@
       <!-- LEFT: FORM -->
       <div class="pickup-form">
 
+        <form id="dashboard-pickup-form" method="POST" action="{% url 'orders:create_order' %}">
+          {% csrf_token %}
+          <input type="hidden" name="full_name" value="{{ user.full_name }}">
+          <input type="hidden" name="email" value="{{ user.email }}">
+          <input type="hidden" name="phone" value="{{ user.phone }}">
+
         <div style="margin-bottom: 1em;" class="pickup-header"> <h2>BOOK PICKUP</h2> </div>
 
-  <button id="service-toggle-btn" class="service-toggle">
+  <button id="service-toggle-btn" class="service-toggle" type="button" aria-controls="service-grid" aria-expanded="false">
   + Select Service
 </button>
 
@@ -526,7 +532,7 @@
   </div>
 
 
-    <button>Select</button>
+    <button type="button">Select</button>
   </div>
 
   <div class="service-card green" data-price="10000">
@@ -540,7 +546,7 @@
 
   </div>
 
-    <button>Select</button>
+    <button type="button">Select</button>
   </div>
 
   <div class="service-card blue" data-price="15000">
@@ -555,7 +561,7 @@
           <span class="tag"><span class="mdi mdi-check-circle"></span> Midsole Unyellowing</span>
   </div>
 
-    <button>Select</button>
+    <button type="button">Select</button>
   </div>
 
   <div class="service-card pink" data-price="25000">
@@ -571,7 +577,7 @@
    
   </div>
 
-    <button>Select</button>
+    <button type="button">Select</button>
   </div>
 
 </div>
@@ -583,7 +589,7 @@
       <div >  
 <div class="form-group address-group">
   <label>Pickup Address *</label>
-  <input id="address-input" type="text" placeholder="Enter your address" autocomplete="off">
+  <input id="address-input" name="address" type="text" placeholder="Enter your address" autocomplete="off" required>
 
   <div id="address-dropdown" class="address-dropdown">
     
@@ -611,7 +617,7 @@
   <!-- LOCATION (REQUIRED) -->
 <div class="form-group">
   <label>AREA *</label>
-  <select id="location-select">
+  <select id="location-select" name="location" required>
     <option value="">Select location</option>
     <option value="mainland">Mainland</option>
     <option value="island">Island</option>
@@ -622,7 +628,7 @@
   <div class="form-group discount-group">
     <label>Discount Code</label>
     <div class="discount-input-wrap">
-      <input id="discount-code" type="text" placeholder="Enter code">
+      <input id="discount-code" name="discount_code" type="text" placeholder="Enter code">
       <button type="button" id="apply-discount">Apply</button>
     </div>
   </div>
@@ -632,12 +638,12 @@
         <div class="form-row snfix">
           <div class="form-group">
             <label>Pickup Date *</label>
-<input id="pickup-date" type="text" placeholder="Select date">
+<input id="pickup-date" name="pickup_date" type="text" placeholder="Select date" required>
           </div>
 
           <div class="form-group">
             <label>Number of Items *</label>
-            <input name="quantity" type="number" placeholder="How many sneakers?">
+            <input name="quantity" type="number" placeholder="How many sneakers?" value="1" min="1" required>
           </div>
         </div>
 
@@ -647,7 +653,7 @@
         </div>
 
         <div class="form-check">
-          <input style="display:none;"     name="terms" type="checkbox">
+          <input name="terms" type="hidden" value="on">
           <span></span>
         </div>
 
@@ -688,10 +694,11 @@
 
 
   <!-- RIGHT (BUTTON) -->
-  <button class="submit-btn">REQUEST PICKUP</button>
+  <button type="submit" class="submit-btn">REQUEST PICKUP</button>
 
 </div>
 
+        </form>
 </div>
       <!-- RIGHT -->
       <div class="pickup-side">
@@ -910,6 +917,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
 })();
 </script>
+
+{% if messages %}
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  {% for message in messages %}
+    if (window.InfoToast) {
+      window.InfoToast.show(
+        "{{ message|escapejs }}",
+        "{% if message.tags == 'error' %}error{% else %}success{% endif %}"
+      );
+    }
+  {% endfor %}
+});
+</script>
+{% endif %}
 
 <script>
 document.addEventListener("DOMContentLoaded", () => {
