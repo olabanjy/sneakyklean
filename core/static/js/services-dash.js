@@ -317,9 +317,6 @@ function isValid() {
   const quantity = Number.parseInt(inputs.quantity?.value, 10);
 
   return (
-    inputs.name?.value.trim() !== "" &&
-    inputs.phone?.value.trim() !== "" &&
-    inputs.email?.value.trim() !== "" &&
     inputs.address?.value.trim() !== "" &&
     inputs.date?.value.trim() !== "" &&
     inputs.location?.value !== "" &&

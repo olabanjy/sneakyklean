@@ -54,7 +54,7 @@ def create_order_view(request):
         # Do not trust editable/hidden identity fields sent by the browser.
         if request.user.is_authenticated:
             email = request.user.email
-            full_name = request.user.full_name or full_name
+            full_name = request.user.full_name or full_name or request.user.get_short_name()
             phone = request.user.phone or phone
         
         # Get selected service IDs and quantities (can be multiple services)
@@ -83,7 +83,11 @@ def create_order_view(request):
                     service_quantities = [quantity] * len(service_ids)
         
         # Validate required fields
-        if not all([full_name, email, phone, address, location, pickup_date_str]) or not service_ids:
+        required_fields = [full_name, email, address, location, pickup_date_str]
+        if not request.user.is_authenticated:
+            required_fields.append(phone)
+
+        if not all(required_fields) or not service_ids:
             messages.error(request, 'Please fill in all required fields and select at least one service.')
             return redirect(redirect_target)
         

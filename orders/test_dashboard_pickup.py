@@ -15,7 +15,7 @@ class DashboardPickupTests(TestCase):
         self.user = User.objects.create_user(
             email="customer@example.com",
             full_name="Test Customer",
-            phone="+2348012345678",
+            phone="",
         )
         self.service = Service.objects.create(
             name="Restoration",
@@ -64,7 +64,7 @@ class DashboardPickupTests(TestCase):
         self.assertEqual(order.user, self.user)
         self.assertEqual(order.email, self.user.email)
         self.assertEqual(order.full_name, self.user.full_name)
-        self.assertEqual(order.phone, self.user.phone)
+        self.assertEqual(order.phone, "")
         self.assertEqual(order.service_type, self.service.name)
         self.assertEqual(order.quantity, 2)
         self.assertEqual(order.subtotal, Decimal("30000"))
