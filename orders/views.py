@@ -17,6 +17,7 @@ def dashboard_view(request):
     """User dashboard showing orders and metrics."""
     user = request.user
     orders = Order.objects.filter(user=user).order_by('-created_at')
+    notifications = orders.order_by('-updated_at')[:8]
     
     # Calculate metrics
     total_orders = user.total_orders
@@ -25,6 +26,7 @@ def dashboard_view(request):
     
     context = {
         'orders': orders,
+        'notifications': notifications,
         'user': user,
         'total_orders': total_orders,
         'pending_orders': pending_orders,

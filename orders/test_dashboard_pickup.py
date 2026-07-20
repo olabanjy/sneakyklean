@@ -7,6 +7,7 @@ from django.urls import reverse
 from django.utils import timezone
 
 from accounts.models import User
+from orders.admin import OrderAdmin
 from orders.models import DiscountCode, Order, Service
 
 
@@ -30,6 +31,81 @@ class DashboardPickupTests(TestCase):
         self.assertContains(response, 'id="dashboard-pickup-form"')
         self.assertContains(response, 'name="pickup_date"')
         self.assertContains(response, 'type="submit" class="submit-btn"')
+
+    def test_dashboard_notifications_are_built_from_user_orders(self):
+        order = Order.objects.create(
+            user=self.user,
+            service_type=self.service.name,
+            quantity=1,
+            full_name=self.user.full_name,
+            email=self.user.email,
+            phone=self.user.phone,
+            address="12 Admiralty Way, Lekki",
+            location="island",
+            pickup_date=timezone.localdate() + timedelta(days=1),
+            subtotal=Decimal("15000"),
+            vat=Decimal("1125"),
+            delivery_fee=Decimal("3500"),
+            total_amount=Decimal("19625"),
+            status="CLEANING",
+        )
+
+        response = self.client.get(reverse("orders:dashboard"))
+
+        self.assertContains(response, f"Order {order.order_number}")
+        self.assertContains(response, "Cleaning in progress")
+        self.assertContains(response, f'data-id="{order.id}"')
+        self.assertContains(response, "js/notifications.js")
+        self.assertNotContains(response, "Order #1021")
+
+        other_user = User.objects.create_user(email="other@example.com")
+        other_order = Order.objects.create(
+            user=other_user,
+            service_type=self.service.name,
+            quantity=1,
+            full_name="Other Customer",
+            email=other_user.email,
+            phone="",
+            address="45 Allen Avenue, Ikeja",
+            location="mainland",
+            pickup_date=timezone.localdate() + timedelta(days=2),
+            subtotal=Decimal("15000"),
+            vat=Decimal("1125"),
+            delivery_fee=Decimal("3500"),
+            total_amount=Decimal("19625"),
+        )
+
+        response = self.client.get(reverse("orders:dashboard"))
+        self.assertNotContains(response, f"Order {other_order.order_number}")
+
+    @patch("orders.signals.send_order_status_email_task.delay")
+    def test_admin_status_action_refreshes_notification_timestamp(self, status_email):
+        order = Order.objects.create(
+            user=self.user,
+            service_type=self.service.name,
+            quantity=1,
+            full_name=self.user.full_name,
+            email=self.user.email,
+            phone=self.user.phone,
+            address="12 Admiralty Way, Lekki",
+            location="island",
+            pickup_date=timezone.localdate() + timedelta(days=1),
+            subtotal=Decimal("15000"),
+            vat=Decimal("1125"),
+            delivery_fee=Decimal("3500"),
+            total_amount=Decimal("19625"),
+        )
+        previous_update = order.updated_at
+
+        updated = OrderAdmin._set_status(
+            Order.objects.filter(pk=order.pk), "CLEANING"
+        )
+
+        order.refresh_from_db()
+        self.assertEqual(updated, 1)
+        self.assertEqual(order.status, "CLEANING")
+        self.assertGreater(order.updated_at, previous_update)
+        status_email.assert_called_once_with(order.id)
 
     @patch("orders.views.send_admin_notification_task.delay")
     @patch("orders.views.send_order_confirmation_email_task.delay")

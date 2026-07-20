@@ -101,35 +101,42 @@ class OrderAdmin(admin.ModelAdmin):
     status_badge.short_description = 'Status'
     
     actions = ['mark_picked_up', 'mark_cleaning', 'mark_out_for_delivery', 'mark_delivered', 'mark_canceled']
+
+    @staticmethod
+    def _set_status(queryset, status):
+        """Save each transition so timestamps and status-change signals run."""
+        updated = 0
+        for order in queryset.iterator():
+            if order.status == status:
+                continue
+            order.status = status
+            order.save(update_fields=['status', 'updated_at'])
+            updated += 1
+        return updated
     
     def mark_picked_up(self, request, queryset):
-        queryset.update(status='PICKED_UP')
-        self.message_user(request, f"{queryset.count()} orders marked as Picked Up.")
+        updated = self._set_status(queryset, 'PICKED_UP')
+        self.message_user(request, f"{updated} orders marked as Picked Up.")
     mark_picked_up.short_description = "Mark as Picked Up"
     
     def mark_cleaning(self, request, queryset):
-        queryset.update(status='CLEANING')
-        self.message_user(request, f"{queryset.count()} orders marked as Cleaning.")
+        updated = self._set_status(queryset, 'CLEANING')
+        self.message_user(request, f"{updated} orders marked as Cleaning.")
     mark_cleaning.short_description = "Mark as Cleaning"
     
     def mark_out_for_delivery(self, request, queryset):
-        updated = 0
-        for order in queryset:
-            order.status = 'OUT_FOR_DELIVERY'
-            order.save()
-            # Delivery code will be auto-generated via signal
-            updated += 1
+        updated = self._set_status(queryset, 'OUT_FOR_DELIVERY')
         self.message_user(request, f"{updated} orders marked as Out for Delivery.")
     mark_out_for_delivery.short_description = "Mark as Out for Delivery"
     
     def mark_delivered(self, request, queryset):
-        queryset.update(status='DELIVERED')
-        self.message_user(request, f"{queryset.count()} orders marked as Delivered.")
+        updated = self._set_status(queryset, 'DELIVERED')
+        self.message_user(request, f"{updated} orders marked as Delivered.")
     mark_delivered.short_description = "Mark as Delivered"
     
     def mark_canceled(self, request, queryset):
-        queryset.update(status='CANCELED')
-        self.message_user(request, f"{queryset.count()} orders marked as Canceled.")
+        updated = self._set_status(queryset, 'CANCELED')
+        self.message_user(request, f"{updated} orders marked as Canceled.")
     mark_canceled.short_description = "Mark as Canceled"
 
 
