@@ -107,6 +107,39 @@ class DashboardPickupTests(TestCase):
         self.assertGreater(order.updated_at, previous_update)
         status_email.assert_called_once_with(order.id)
 
+    def test_quick_rating_uses_reversed_url_and_creates_rating(self):
+        order = Order.objects.create(
+            user=self.user,
+            service_type=self.service.name,
+            quantity=1,
+            full_name=self.user.full_name,
+            email=self.user.email,
+            phone=self.user.phone,
+            address="12 Admiralty Way, Lekki",
+            location="island",
+            pickup_date=timezone.localdate(),
+            subtotal=Decimal("15000"),
+            vat=Decimal("1125"),
+            delivery_fee=Decimal("3500"),
+            total_amount=Decimal("19625"),
+            status="DELIVERED",
+        )
+        rate_url = reverse("orders:quick_rate_order", args=[order.id])
+
+        dashboard = self.client.get(reverse("orders:dashboard"))
+        self.assertContains(dashboard, f'data-rate-url="{rate_url}"')
+        self.assertNotContains(dashboard, f"/orders/order/{order.id}/quick-rate/")
+
+        response = self.client.post(rate_url, {"rating": "5"})
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(response.json()["success"])
+        self.assertEqual(order.rating.rating, 5)
+
+        duplicate = self.client.post(rate_url, {"rating": "4"})
+        self.assertEqual(duplicate.status_code, 409)
+        self.assertFalse(duplicate.json()["success"])
+
     @patch("orders.views.send_admin_notification_task.delay")
     @patch("orders.views.send_order_confirmation_email_task.delay")
     def test_authenticated_pickup_creates_order_and_returns_to_dashboard(

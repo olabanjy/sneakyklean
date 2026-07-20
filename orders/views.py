@@ -268,48 +268,46 @@ def rate_order_view(request, order_id):
 @login_required
 def quick_rate_order_view(request, order_id):
     """AJAX endpoint for quick rating from dashboard."""
-    try:
-        order = get_object_or_404(Order, id=order_id, user=request.user)
-        
-        # Check if order is delivered
-        if order.status != 'DELIVERED':
-            return JsonResponse({
-                'success': False,
-                'message': 'You can only rate delivered orders.'
-            })
-        
-        # Check if already rated
-        if hasattr(order, 'rating'):
-            return JsonResponse({
-                'success': False,
-                'message': 'You have already rated this order.'
-            })
-        
-        rating_value = int(request.POST.get('rating', 0))
-        
-        if not (1 <= rating_value <= 5):
-            return JsonResponse({
-                'success': False,
-                'message': 'Rating must be between 1 and 5 stars.'
-            })
-        
-        # Create rating
-        Rating.objects.create(
-            order=order,
-            rating=rating_value
-        )
-        
-        return JsonResponse({
-            'success': True,
-            'message': 'Thank you for your feedback!',
-            'rating': rating_value
-        })
-        
-    except Exception as e:
+    order = get_object_or_404(Order, id=order_id, user=request.user)
+
+    if order.status != 'DELIVERED':
         return JsonResponse({
             'success': False,
-            'message': str(e)
-        })
+            'message': 'You can only rate delivered orders.'
+        }, status=400)
+
+    if hasattr(order, 'rating'):
+        return JsonResponse({
+            'success': False,
+            'message': 'You have already rated this order.'
+        }, status=409)
+
+    try:
+        rating_value = int(request.POST.get('rating', 0))
+    except (TypeError, ValueError):
+        rating_value = 0
+
+    if not (1 <= rating_value <= 5):
+        return JsonResponse({
+            'success': False,
+            'message': 'Rating must be between 1 and 5 stars.'
+        }, status=400)
+
+    rating, created = Rating.objects.get_or_create(
+        order=order,
+        defaults={'rating': rating_value}
+    )
+    if not created:
+        return JsonResponse({
+            'success': False,
+            'message': 'You have already rated this order.'
+        }, status=409)
+
+    return JsonResponse({
+        'success': True,
+        'message': 'Thank you for your feedback!',
+        'rating': rating.rating
+    })
 
 
 @require_POST

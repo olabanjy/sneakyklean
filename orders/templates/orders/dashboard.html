@@ -378,7 +378,7 @@
         {% endif %}
       {% endfor %}
     {% elif order.status == 'DELIVERED' %}
-      <div class="rating-stars" data-order-id="{{ order.id }}" style="cursor:pointer;">
+      <div class="rating-stars" data-rate-url="{% url 'orders:quick_rate_order' order.id %}" style="cursor:pointer;">
         <i class="mdi mdi-star-outline rating-star" data-value="1"></i>
         <i class="mdi mdi-star-outline rating-star" data-value="2"></i>
         <i class="mdi mdi-star-outline rating-star" data-value="3"></i>
@@ -1685,9 +1685,8 @@ document.addEventListener('DOMContentLoaded', function() {
       });
       
       star.addEventListener('click', () => {
-        const orderId = ratingContainer.dataset.orderId;
         const rating = index + 1;
-        submitRating(orderId, rating, ratingContainer);
+        submitRating(rating, ratingContainer);
       });
     });
     
@@ -1710,49 +1709,51 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     }
     
-    function submitRating(orderId, rating, container) {
-      const url = `/orders/order/${orderId}/quick-rate/`;
-      
-      fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-          'X-CSRFToken': getCsrfToken()
-        },
-        body: `rating=${rating}`
-      })
-      .then(response => response.json())
-      .then(data => {
-        if (data.success) {
-          currentRating = rating;
-          highlightStars(rating);
-          container.style.pointerEvents = 'none';
-          
-          // Show success message
-          if (window.InfoToast) {
-            InfoToast.show(data.message, 'success');
-          } else {
-            alert(data.message);
-          }
-        } else {
-          // Reset stars on error
-          highlightStars(currentRating);
-          if (window.InfoToast) {
-            InfoToast.show(data.message, 'error');
-          } else {
-            alert(data.message);
-          }
+    async function submitRating(rating, container) {
+      if (container.dataset.submitting === 'true') return;
+      container.dataset.submitting = 'true';
+      container.setAttribute('aria-busy', 'true');
+
+      try {
+        const response = await fetch(container.dataset.rateUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-CSRFToken': getCsrfToken()
+          },
+          body: new URLSearchParams({ rating: String(rating) })
+        });
+
+        const contentType = response.headers.get('content-type') || '';
+        const data = contentType.includes('application/json')
+          ? await response.json()
+          : { message: 'Unable to submit rating.' };
+
+        if (!response.ok || !data.success) {
+          throw new Error(data.message || 'Unable to submit rating.');
         }
-      })
-      .catch(error => {
+
+        currentRating = rating;
+        highlightStars(rating);
+        container.style.pointerEvents = 'none';
+        container.removeAttribute('aria-busy');
+
+        if (window.InfoToast) {
+          InfoToast.show(data.message, 'success');
+        } else {
+          alert(data.message);
+        }
+      } catch (error) {
+        delete container.dataset.submitting;
+        container.removeAttribute('aria-busy');
         console.error('Error:', error);
         highlightStars(currentRating);
         if (window.InfoToast) {
-          InfoToast.show('Failed to submit rating. Please try again.', 'error');
+          InfoToast.show(error.message || 'Failed to submit rating. Please try again.', 'error');
         } else {
-          alert('Failed to submit rating. Please try again.');
+          alert(error.message || 'Failed to submit rating. Please try again.');
         }
-      });
+      }
     }
   });
 });
