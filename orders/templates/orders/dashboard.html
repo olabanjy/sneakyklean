@@ -413,33 +413,34 @@
 
 
 <p class="snls-title"><span class="mdi mdi-cog-box"></span>  Settings</p>
-<div class="profile-row" id="profile-settings-row">
+<form class="profile-row" id="profile-settings-row" method="POST" action="{% url 'accounts:update_profile' %}">
+  {% csrf_token %}
 
   <div class="form-group">
     <label>PREFERRED NAME</label>
-    <input name="name" type="text" value="{{ user.full_name|default:'Not provided' }}" readonly>
+    <input name="full_name" type="text" value="{{ user.full_name|default:'' }}" readonly>
   </div>
 
   <div class="form-group">
     <label>EMAIL</label>
-    <input name="email" type="email" value="{{ user.email }}" readonly>
+    <input name="email" type="email" value="{{ user.email }}" readonly required>
   </div>
 
   <div class="form-group">
     <label>PHONE</label>
-    <input name="phone" type="text" value="{{ user.phone|default:'Not provided' }}" readonly>
+    <input name="phone" type="text" value="{{ user.phone|default:'' }}" readonly>
   </div>
 
   <div class="form-actions">
-    <button 
-      id="profile-toggle-btn" 
-      type="button" 
+    <button
+      id="profile-toggle-btn"
+      type="button"
       class="profile-toggle-btn">
       Edit
     </button>
   </div>
 
-</div>
+</form>
 
 <br>
 
@@ -1450,6 +1451,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (!row || !btn) return;
 
   const inputs = row.querySelectorAll("input");
+  const form = row.closest("form");
 
   let editing = false;
 
@@ -1471,16 +1473,8 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
       btn.textContent = "Edit";
       btn.classList.remove("active");
-
-      const data = {};
-      inputs.forEach(input => {
-        data[input.name] = input.value;
-      });
-
-      console.log("Saved:", data);
-
-      if (window.InfoToast) {
-        InfoToast.show("Profile updated");
+      if (form) {
+        form.submit();
       }
     }
   });

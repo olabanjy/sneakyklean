@@ -3,6 +3,7 @@ from django.contrib.auth import login as auth_login, logout as auth_logout
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_http_methods
 from django.contrib import messages
+from django.contrib.auth import update_session_auth_hash
 from django.core.cache import cache
 from django.utils import timezone
 from django.http import JsonResponse
@@ -200,3 +201,33 @@ def logout_view(request):
     auth_logout(request)
     messages.success(request, 'Successfully logged out.')
     return redirect('core:index')
+
+
+@login_required
+@require_http_methods(["POST"])
+def update_profile_view(request):
+    """Update the logged-in user's profile details from the dashboard."""
+    user = request.user
+
+    full_name = request.POST.get('full_name', '').strip()
+    email = request.POST.get('email', '').strip().lower()
+    phone = request.POST.get('phone', '').strip()
+
+    if not email:
+        messages.error(request, 'Email is required.')
+        return redirect('orders:dashboard')
+
+    if User.objects.exclude(pk=user.pk).filter(email=email).exists():
+        messages.error(request, 'That email is already in use by another account.')
+        return redirect('orders:dashboard')
+
+    user.full_name = full_name
+    user.email = email
+    user.phone = phone
+    user.save()
+
+    # Keep the session valid after updating the account record.
+    update_session_auth_hash(request, user)
+
+    messages.success(request, 'Profile updated successfully.')
+    return redirect('orders:dashboard')
