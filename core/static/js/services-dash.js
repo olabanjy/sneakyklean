@@ -248,28 +248,18 @@ function updateServiceText() {
 }
 
 function updateQuantity() {
-  const serviceCount = window.selectedServices.length;
+  if (!inputs.quantity) return null;
 
-  // 🔒 COMBO MODE
-  if (serviceCount > 1) {
-    inputs.quantity.value = 2;
-    inputs.quantity.disabled = true;
-    inputs.quantity.style.opacity = "0.6";
-    return 2;
-  }
-
-  // ✅ SINGLE SERVICE MODE (DO NOT OVERRIDE USER INPUT)
   inputs.quantity.disabled = false;
   inputs.quantity.style.opacity = "1";
 
-  let qty = parseInt(inputs.quantity.value);
-
-  if (isNaN(qty) || qty < 1) {
-    qty = 1;
-    inputs.quantity.value = 1;
+  const rawValue = inputs.quantity.value.trim();
+  if (rawValue === "") {
+    return null;
   }
 
-  return qty;
+  const qty = Number.parseInt(rawValue, 10);
+  return Number.isInteger(qty) && qty > 0 ? qty : null;
 }
 
 /* =========================
@@ -277,14 +267,20 @@ function updateQuantity() {
 ========================= */
 function updatePrice() {
   const quantity = updateQuantity();
+  if (quantity === null) {
+    subtotalEl.textContent = "0";
+    vatEl.textContent = "0";
+    deliveryEl.textContent = "0";
+    totalEl.textContent = "0";
+    return;
+  }
 
   const serviceTotal = getTotalServicePrice();
   const isCombo = window.selectedServices.length > 1;
 
-  // 🔥 KEY FIX
   const subtotal = isCombo
-    ? serviceTotal              // combo = flat bundle
-    : serviceTotal * quantity;  // single service = per quantity
+    ? serviceTotal
+    : serviceTotal * quantity;
 
   const delivery = 3500;
   const vat = subtotal * 0.075;
@@ -314,12 +310,14 @@ function updatePrice() {
    VALIDATION
 ========================= */
 function isValid() {
-  const quantity = Number.parseInt(inputs.quantity?.value, 10);
+  const quantityValue = inputs.quantity?.value.trim();
+  const quantity = Number.parseInt(quantityValue, 10);
 
   return (
     inputs.address?.value.trim() !== "" &&
     inputs.date?.value.trim() !== "" &&
     inputs.location?.value !== "" &&
+    quantityValue !== "" &&
     Number.isInteger(quantity) && quantity > 0 &&
     window.selectedServices.length > 0
   );
@@ -339,6 +337,52 @@ cards.forEach(card => {
     window.handleSelection(card);
   });
 });
+
+const quantityInput = inputs.quantity;
+const decreaseBtn = form?.querySelector(".quantity-decrease");
+const increaseBtn = form?.querySelector(".quantity-increase");
+
+if (quantityInput) {
+  quantityInput.addEventListener("blur", () => {
+    const value = quantityInput.value.trim();
+    if (value === "") {
+      quantityInput.value = "1";
+      updatePrice();
+      updateButtonState();
+      return;
+    }
+
+    const parsed = Number.parseInt(value, 10);
+    if (Number.isNaN(parsed) || parsed < 1) {
+      quantityInput.value = "1";
+    } else {
+      quantityInput.value = String(parsed);
+    }
+
+    updatePrice();
+    updateButtonState();
+  });
+}
+
+if (decreaseBtn && quantityInput) {
+  decreaseBtn.addEventListener("click", () => {
+    const current = Number.parseInt(quantityInput.value, 10) || 1;
+    quantityInput.value = String(Math.max(1, current - 1));
+    quantityInput.focus();
+    updatePrice();
+    updateButtonState();
+  });
+}
+
+if (increaseBtn && quantityInput) {
+  increaseBtn.addEventListener("click", () => {
+    const current = Number.parseInt(quantityInput.value, 10) || 1;
+    quantityInput.value = String(current + 1);
+    quantityInput.focus();
+    updatePrice();
+    updateButtonState();
+  });
+}
 
 /* =========================
    INPUT LISTENERS

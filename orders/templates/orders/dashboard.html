@@ -618,7 +618,11 @@
 
           <div class="form-group">
             <label>Number of Items *</label>
-            <input name="quantity" type="number" placeholder="How many sneakers?" value="1" min="1" required>
+            <div class="quantity-control">
+              <button type="button" class="quantity-step quantity-decrease" aria-label="Decrease number of items">−</button>
+              <input name="quantity" type="number" placeholder="How many sneakers?" value="1" min="1" step="1" inputmode="numeric" required>
+              <button type="button" class="quantity-step quantity-increase" aria-label="Increase number of items">+</button>
+            </div>
           </div>
         </div>
 

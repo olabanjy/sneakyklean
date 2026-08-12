@@ -3455,6 +3455,43 @@ input[type="checkbox"] {
   align-items: flex-end;
 }
 
+/* ===== QUANTITY CONTROL ===== */
+.quantity-control {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.quantity-control input {
+  flex: 1;
+  min-width: 0;
+}
+
+.quantity-step {
+  width: 42px;
+  height: 42px;
+  border: 1px solid #d6d6d6;
+  border-radius: 10px;
+  background: #fff;
+  color: #000;
+  font-size: 20px;
+  line-height: 1;
+  font-family: "Kode Mono", monospace;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.15s ease, background 0.15s ease, opacity 0.15s ease;
+}
+
+.quantity-step:hover {
+  background: #f4f4f4;
+}
+
+.quantity-step:active {
+  transform: scale(0.97);
+}
+
 
 @media (max-width: 768px) {
   #profile-settings-row {
@@ -3469,6 +3506,16 @@ input[type="checkbox"] {
 
   .profile-toggle-btn {
     width: 100%;
+  }
+
+  .quantity-control {
+    gap: 8px;
+  }
+
+  .quantity-step {
+    width: 40px;
+    height: 40px;
+    flex: 0 0 40px;
   }
 }
 
